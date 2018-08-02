@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/images/jsys_03/memories.jpg">
 <meta property="og:image" content="http://yoursite.com/images/jsys_03/compare.jpg">
 <meta property="og:image" content="http://yoursite.com/images/jsys_03/architecture.png">
-<meta property="og:updated_time" content="2018-08-02T12:02:15.152Z">
+<meta property="og:updated_time" content="2018-08-02T15:27:54.110Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算的要素-第三章小结">
 <meta name="twitter:description" content="It’s a poor sort of memory that only works backward.—- Lewis Carroll 1 背景时钟（Clock）：其精确的硬件实现通常基于振荡器，其在两个信号值0-1，或称“高-低电平”。两个相邻的信号上升沿称为时钟周期，时钟周期非常重要，所有的时序逻辑都是基于时钟周期的，比如写入内存（读取内存是个时序无关操作），内存值的真实修改（假设当前时钟周">
@@ -323,7 +323,7 @@
         <p><em>It’s a poor sort of memory that only works backward.—- Lewis Carroll</em></p>
 <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景</h3><p><strong>时钟（Clock）</strong>：其精确的硬件实现通常基于振荡器，其在两个信号值0-1，或称“高-低电平”。两个相邻的信号上升沿称为时钟周期，时钟周期非常重要，所有的时序逻辑都是基于时钟周期的，比如写入内存（读取内存是个时序无关操作），内存值的真实修改（假设当前时钟周期进行写入内存操作）是发生在下一个时钟周期上升沿的时候，可以参见书本的多路转换DFF实现。</p>
 <p><strong>触发器（Filp-Flops）</strong>：此项目采用DFF（Data Filp-Flops），DFF有个时钟输入，根据主时钟信号连续地交变。数据和时钟的输入使得DFF能够实现基于时间行为out（t）=in（t-1）</p>
-<p>寄存器（register）：这里的寄存器指的是广义上的存储设备，并不仅仅是通常意义上的CPU内的register，它的存储行为是out（t）=out（t-1），也就是说他能够输出他上一个时钟周期的输入，并通过Mux（多路转换器）在条件允许（load控制）时输出至输入信号，这也就说明了它为什么能够维持自身的“状态”</p>
+<p><strong>寄存器（register）</strong>：这里的寄存器指的是广义上的存储设备，并不仅仅是通常意义上的CPU内的register，它的存储行为是out（t）=out（t-1），也就是说他能够输出他上一个时钟周期的输入，并通过Mux（多路转换器）在条件允许（load控制）时输出至输入信号，这也就说明了它为什么能够维持自身的“状态”</p>
 <p><img src="/images/jsys_03/DFF.jpg" alt=""></p>
 <h3 id="2-Memories"><a href="#2-Memories" class="headerlink" title="2 Memories"></a>2 Memories</h3><p>作为一个程序员，和内存打交道的时候还是很多的，所以让我们来重点看看内存这个家伙的构造。<br><img src="/images/jsys_03/memories.jpg" alt=""><br>如图3.3所示，内存可以通过将很多寄存器堆叠起来形成随机存取RAM单元来实现。随机存取内存（RAM）这个概念由此得来：在RAM上能够随机访问被选择的字而不会受限于访问顺序。也就是说，我们要求内存中的任何字（无论具体物理位置在哪里）都能以相等的速度被直接访问。</p>
 <p><font color="red">说到这里在数据结构课上老师说的，同学们，我们的数组具有随机性啊，随机性，当时还不太清楚这个随机性到底是怎么实现的，那么现在就真相大白了，数组的随机性实际上就是指RAM的随机性（数组可以理解成在内存中连续的片断，连续很重要，实际上在编译器层面对数组的处理也是看成一段连续的内存）</font><br>那么现在让我们一起看看RAM的随机性是如何实现的；-)</p>
