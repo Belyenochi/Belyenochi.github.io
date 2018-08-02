@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927) 1.什么是逻辑门（logic Gate）？在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。学过离散数学">
+<meta name="description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927) 1 什么是逻辑门（logic Gate）？在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。学过离散数学">
 <meta name="keywords" content="计算机体系结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算的要素-第一章小结">
 <meta property="og:url" content="http://yoursite.com/2018/07/30/jsys_01_summary/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
-<meta property="og:description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927) 1.什么是逻辑门（logic Gate）？在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。学过离散数学">
+<meta property="og:description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927) 1 什么是逻辑门（logic Gate）？在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。学过离散数学">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/jsys_01/logicGate.jpg">
 <meta property="og:image" content="http://yoursite.com/images/jsys_01/implementOfGate.jpg">
@@ -99,10 +99,10 @@
 <meta property="og:image" content="http://yoursite.com/images/jsys_01/Not.png">
 <meta property="og:image" content="http://yoursite.com/images/jsys_01/Or.png">
 <meta property="og:image" content="http://yoursite.com/images/jsys_01/Xor.png">
-<meta property="og:updated_time" content="2018-07-31T07:10:42.405Z">
+<meta property="og:updated_time" content="2018-08-02T12:04:29.382Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算的要素-第一章小结">
-<meta name="twitter:description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927) 1.什么是逻辑门（logic Gate）？在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。学过离散数学">
+<meta name="twitter:description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927) 1 什么是逻辑门（logic Gate）？在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。学过离散数学">
 <meta name="twitter:image" content="http://yoursite.com/images/jsys_01/logicGate.jpg">
 
 
@@ -329,14 +329,14 @@
 
       
         <p><em>Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927)</em></p>
-<h2 id="1-什么是逻辑门（logic-Gate）？"><a href="#1-什么是逻辑门（logic-Gate）？" class="headerlink" title="1.什么是逻辑门（logic Gate）？"></a>1.什么是逻辑门（logic Gate）？</h2><p>在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。<br>学过离散数学的朋友肯定对真值表不陌生，事实上逻辑门就是由布尔函数的物理具象化，输入和输出就是真值表的变量，如果布尔函数f有n个输入变量，返回m个二进制的结果，那么用来实现这个函数f的门将会有n个输入管脚（input pins）和m个输出管脚（ouput pins） 。当我们把一些值从输入管脚输入，它的内部结构即逻辑门<br>会计算然后输出对应的结果值。<br><img src="/images/jsys_01/logicGate.jpg" alt=""></p>
-<h2 id="2-如何使用逻辑门"><a href="#2-如何使用逻辑门" class="headerlink" title="2.如何使用逻辑门"></a>2.如何使用逻辑门</h2><p><img src="/images/jsys_01/implementOfGate.jpg" alt=""><br>对于任何给定的逻辑门，我们都能够从外部和内部两个不同方面进行观察，图1.4中右边的图给出了门的内部结构（或称为内部实现），而左边部分仅仅显示了门的外部接口（interface），也就是输入和输出管脚。内部结构仅仅与门电路的设计者相关，而外部结构则是其他设计者所关心的（也就是外部结构也就是我们常常使用的黑盒抽象，只关心输入输出），他们仅仅使用门电路的抽象而不去关心其内部结构。<br>下面总结两点关于逻辑设计的要素：</p>
+<h3 id="1-什么是逻辑门（logic-Gate）？"><a href="#1-什么是逻辑门（logic-Gate）？" class="headerlink" title="1 什么是逻辑门（logic Gate）？"></a>1 什么是逻辑门（logic Gate）？</h3><p>在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。<br>学过离散数学的朋友肯定对真值表不陌生，事实上逻辑门就是由布尔函数的物理具象化，输入和输出就是真值表的变量，如果布尔函数f有n个输入变量，返回m个二进制的结果，那么用来实现这个函数f的门将会有n个输入管脚（input pins）和m个输出管脚（ouput pins） 。当我们把一些值从输入管脚输入，它的内部结构即逻辑门<br>会计算然后输出对应的结果值。<br><img src="/images/jsys_01/logicGate.jpg" alt=""></p>
+<h3 id="2-如何使用逻辑门"><a href="#2-如何使用逻辑门" class="headerlink" title="2 如何使用逻辑门"></a>2 如何使用逻辑门</h3><p><img src="/images/jsys_01/implementOfGate.jpg" alt=""><br>对于任何给定的逻辑门，我们都能够从外部和内部两个不同方面进行观察，图1.4中右边的图给出了门的内部结构（或称为内部实现），而左边部分仅仅显示了门的外部接口（interface），也就是输入和输出管脚。内部结构仅仅与门电路的设计者相关，而外部结构则是其他设计者所关心的（也就是外部结构也就是我们常常使用的黑盒抽象，只关心输入输出），他们仅仅使用门电路的抽象而不去关心其内部结构。<br>下面总结两点关于逻辑设计的要素：</p>
 <ol>
 <li>虽然逻辑设计（门电路设计者）的基本功能可以通过不同的的方式实现其外部接口，但从效率的角度上来说，<strong>基本原则</strong>是用尽可能少的门来显示尽可能多的功能。</li>
 <li>给定门的描述（外部接口），通过应用已经实现的门，找到有效的方法来实现它。<br><strong>因为本课程后续部分采用了HDL语言，所以这里简单的解释HDL语言：</strong><br>chips(芯片)的HDL定义包括header部分和parts部分。<br>Header部分描述了芯片的接口(interface)，也就是芯片的名称、输入和输出管脚。<br>Pars部分描述了所有底层电路的名称和拓扑结构，这些电路是构成该芯片的基本部分，每个部分用一个statement(语句)来表示，它描述了该部分的名称与其他部分的连接方式。<br>为了简单明了的编写这些语句，HDL程序员必须有内在模块的接口文档，体现在project中就是注释了。<br>形如part’s pin name = chip’s pin name的含义是将芯片内部的管脚与外部管教相连，如此实现了芯片的输入输出。<br>更多关于HDL程序设计的内容可以参考《计算的要素》附录部分。</li>
 </ol>
-<h2 id="3-为什么使用逻辑门"><a href="#3-为什么使用逻辑门" class="headerlink" title="3.为什么使用逻辑门"></a>3.为什么使用逻辑门</h2><p>之前曾谈到计算机的计算模型采用了布尔代数，从图灵机的纸带存储符号,到冯诺依曼体系结构的memory都采用了0,1作为数据的表示形式，其根本是高效和简单（当然lambda calculus不是这么做的，你可以自己定义数字如church numerals，函数等，因为是抽象模型所以理解和运算起来没有0，1在实际应用中直接，但事实上无论是TM,lambda calculus，冯诺依曼体系结构都是等价的，可以说前两者是等价的计算模型，后者是物理实现模型，本质都是对计算的建模且等价！）</p>
-<h2 id="4-各种逻辑门（project中的图示）"><a href="#4-各种逻辑门（project中的图示）" class="headerlink" title="4.各种逻辑门（project中的图示）"></a>4.各种逻辑门（project中的图示）</h2><p>项目地址<a href="https://github.com/Belyenochi/nand2tetris" target="_blank" rel="noopener">https://github.com/Belyenochi/nand2tetris</a></p>
+<h3 id="3-为什么使用逻辑门"><a href="#3-为什么使用逻辑门" class="headerlink" title="3 为什么使用逻辑门"></a>3 为什么使用逻辑门</h3><p>之前曾谈到计算机的计算模型采用了布尔代数，从图灵机的纸带存储符号,到冯诺依曼体系结构的memory都采用了0,1作为数据的表示形式，其根本是高效和简单（当然lambda calculus不是这么做的，你可以自己定义数字如church numerals，函数等，因为是抽象模型所以理解和运算起来没有0，1在实际应用中直接，但事实上无论是TM,lambda calculus，冯诺依曼体系结构都是等价的，可以说前两者是等价的计算模型，后者是物理实现模型，本质都是对计算的建模且等价！）</p>
+<h3 id="4-各种逻辑门（project中的图示）"><a href="#4-各种逻辑门（project中的图示）" class="headerlink" title="4 各种逻辑门（project中的图示）"></a>4 各种逻辑门（project中的图示）</h3><p>项目地址<a href="https://github.com/Belyenochi/nand2tetris" target="_blank" rel="noopener">https://github.com/Belyenochi/nand2tetris</a></p>
 <ol>
 <li>And<br><img src="/images/jsys_01/And.png" alt=""></li>
 <li>And16<br><img src="/images/jsys_01/And16.png" alt=""></li>
@@ -470,7 +470,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -516,7 +516,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是逻辑门（logic-Gate）？"><span class="nav-text">1.什么是逻辑门（logic Gate）？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-如何使用逻辑门"><span class="nav-text">2.如何使用逻辑门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-为什么使用逻辑门"><span class="nav-text">3.为什么使用逻辑门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-各种逻辑门（project中的图示）"><span class="nav-text">4.各种逻辑门（project中的图示）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是逻辑门（logic-Gate）？"><span class="nav-text">1 什么是逻辑门（logic Gate）？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-如何使用逻辑门"><span class="nav-text">2 如何使用逻辑门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-为什么使用逻辑门"><span class="nav-text">3 为什么使用逻辑门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-各种逻辑门（project中的图示）"><span class="nav-text">4 各种逻辑门（project中的图示）</span></a></li></ol></div>
             
 
           </div>
