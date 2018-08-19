@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_05/TM.png">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_05/TM_increase.png">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_05/compare.jpg">
-<meta property="og:updated_time" content="2018-08-05T14:47:04.636Z">
+<meta property="og:updated_time" content="2018-08-19T11:27:20.995Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算的要素第五章小结">
 <meta name="twitter:description" content="what I hear, I forget;     What see, I remember; What I do, I understand. 1 回顾经过了逻辑门，触发器，寄存器，RAM,PC，ALU，取址模式，I/O内存映像的学习，我们已经学习了实现CPU的前置条件，那么让我开始开始CPU以及进一步的Hack Machine的实现吧！ 2 背景2.1 存储程序一个由有限硬件组件构成的计算机">
@@ -405,6 +405,8 @@
 <p>Q：图灵机是当前计算机的极限了吗？<br>A：从计算模型上来看是的，实际上到现在为止还没有超出图灵机计算能力范畴的计算机出现，无论是人工神经网络还是遗传算法，“机器学习”和“人工智能”领域的算法都是确定，有穷的，也没有超出图灵机的计算范畴，当然这么多年来人类还是有尝试的，比如<a href="https://zh.wikipedia.org/wiki/%E9%A0%90%E8%A8%80%E6%A9%9F" title="Oracle machine" target="_blank" rel="noopener">Oracle machine</a></p>
 <p>更多关于TM的内容，可以参考Reference，和我之前的blog<a href="https://blog.csdn.net/qq_36936155/article/details/79347364" title=" 理解图灵机及其边界" target="_blank" rel="noopener"> 理解图灵机及其边界</a></p>
 <h4 id="4-2-如何统一"><a href="#4-2-如何统一" class="headerlink" title="4.2 如何统一"></a>4.2 如何统一</h4><p><img src="/images/jsys_05/compare.jpg" alt=""><br>介绍完了TM和冯诺依曼体系，是时候进行mapping了。<br>状态集合state set -&gt; state register<br>纸带tape -&gt; memory（通常意义上是RAM）<br>状态转换函数delta -&gt; 组合电路中的输出（输出至state register相当于进入了另一个状态）<br>当前所在位置current position -&gt; PC<br>字符集character set -&gt; memory中的instruction<br>实际上，取值-执行模型中从内存中取出指令，交给CPU运算然后决定下一条指令的地址（模拟了纸带头读取当前位置，并根据当前位置进行state判断，左移右移或停机），然后改变PC（对应当前所在位置发生改变），然后循环直达到Final State（对应TM中的停机）</p>
+<font color="blue">学过数据结构的朋友会发现图灵机实际上也代表了链式存储，call by position而冯诺依曼的RAM实际上就是Vector，嗯，通过多路选择器随机访问，call by rank，这也说明了图灵机作为理论模型在实际应用中还是需要进行trade off</font>
+
 <h3 id="5-Reference"><a href="#5-Reference" class="headerlink" title="5 Reference"></a>5 Reference</h3><p><a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/lecture-notes/lecture23webhan.pdf" title="Evaluation and universal machines The Eval/Apply Cycle Examining" target="_blank" rel="noopener">Evaluation and universal machines The Eval/Apply Cycle Examining</a><br><a href="https://en.wikipedia.org/wiki/Denotational_semantics" title="Denotational_semantics" target="_blank" rel="noopener">Denotational_semantics</a><br><a href="https://en.wikipedia.org/wiki/Turing_machine" title="Turing_machine_wiki" target="_blank" rel="noopener">Turing_machine_wiki</a><br><a href="https://philosophy.stackexchange.com/questions/48865/can-computers-do-things-turing-machines-cant" title="https://philosophy.stackexchange.com/questions/48865/can-computers-do-things-turing-machines-can&#39;t" target="_blank" rel="noopener">can-computers-do-things-turing-machines-cant</a><br><a href="chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/static/pdf/web/viewer.html?file=http%3A%2F%2Fport70.net%2F~nsz%2Fc%2Fc%252B%252B%2Fturing.pdf" title="C++ Templates are Turing Complete" target="_blank" rel="noopener">C++ Templates are Turing Complete</a></p>
 
       
@@ -538,15 +540,6 @@
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">标签</span>
-                
-              </div>
             
 
           </nav>
