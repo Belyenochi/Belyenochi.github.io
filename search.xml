@@ -3,6 +3,15 @@
   
     
     <entry>
+      <title>从零开始的正则引擎之旅(零)</title>
+      <link href="/2018/08/27/regex-engine-00/"/>
+      <url>/2018/08/27/regex-engine-00/</url>
+      <content type="html"><![CDATA[<h3 id="1-序言"><a href="#1-序言" class="headerlink" title="1 序言"></a>1 序言</h3><p>距离挖这个坑已经过去3个月了，嗯，我没记错的的话4个月前我还挖了一个brainfuck解释器的坑，就作为下周的作业吧~<br>废话不多说，本系列旨在</p><ol><li>理解掌握一个简单parser的所作所为。</li><li>梳理正则引擎构建和优化过程中的各种该算法</li><li>造出一个能用的正则引擎（C++）</li><li>将该正则引擎作为Node.js的C++扩展</li></ol><h3 id="2-阶段构建图"><a href="#2-阶段构建图" class="headerlink" title="2 阶段构建图"></a>2 阶段构建图</h3><p><img src="/images/regex_engine_00/milestone.jpg" alt=""></p><ol><li>实现一个LL(1)的递归下降parser解析regex文法</li><li>将part1生成的AST转化为NFA</li><li>将NFA转化为DFA</li><li>优化DFA，最小化等</li><li><strong>【英雄难度副本】</strong>parser到VM code执行</li><li><strong>【史诗难度副本】</strong>采用JIT优化引擎<br>后两个阶段我现在并没有很大的把握做好，但我会尽力而为的，也欢迎熟悉这一块的同学能够给予我一些建议与指正，感激不尽。</li></ol><h3 id="3-Reference"><a href="#3-Reference" class="headerlink" title="3 Reference"></a>3 Reference</h3><p><a href="https://swtch.com/~rsc/regexp/" title="Implementing Regular Expressions Russ Cox " target="_blank" rel="noopener">Implementing Regular Expressions Russ Cox </a><br><a href="https://github.com/miura1729/ytljit/blob/master/sample/regexp.rb" title="ytljit" target="_blank" rel="noopener">ytljit</a><br><a href="https://www.zhihu.com/question/27434493" title="如何从零写一个正则表达式引擎？" target="_blank" rel="noopener">如何从零写一个正则表达式引擎？</a><br><a href="https://en.wikipedia.org/wiki/Comparison_of_regular_expression_engines" title="Comparison of regular expression engines" target="_blank" rel="noopener">Comparison of regular expression engines</a><br><a href="https://swtch.com/~rsc/regexp/regexp1.html" title="Regular Expression Matching Can Be Simple And Fast " target="_blank" rel="noopener">Regular Expression Matching Can Be Simple And Fast </a></p>]]></content>
+      
+      
+    </entry>
+    
+    <entry>
       <title>计算的要素-第六章小结</title>
       <link href="/2018/08/27/jsys_06_summary/"/>
       <url>/2018/08/27/jsys_06_summary/</url>
