@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="编译原理之Parsing techniques 0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分  清晨入古寺—-论世间parser为">
+<meta name="description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始的编译原理之旅----Parser篇(零)">
 <meta property="og:url" content="http://www.woaitucao.xyz/2018/08/28/parser_00/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
-<meta property="og:description" content="编译原理之Parsing techniques 0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分  清晨入古寺—-论世间parser为">
+<meta property="og:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/parser_00/example.jpg">
-<meta property="og:updated_time" content="2018-08-28T03:00:23.211Z">
+<meta property="og:updated_time" content="2018-08-28T03:04:28.649Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始的编译原理之旅----Parser篇(零)">
-<meta name="twitter:description" content="编译原理之Parsing techniques 0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分  清晨入古寺—-论世间parser为">
+<meta name="twitter:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
 <meta name="twitter:image" content="http://www.woaitucao.xyz/images/parser_00/example.jpg">
 
 
@@ -360,11 +360,10 @@
       
 
       
-        <p>编译原理之Parsing techniques</p>
-<h3 id="0-序言"><a href="#0-序言" class="headerlink" title="0 序言"></a>0 序言</h3><p>自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。</p>
+        <h3 id="0-序言"><a href="#0-序言" class="headerlink" title="0 序言"></a>0 序言</h3><p>自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。</p>
 <h3 id="1-目录"><a href="#1-目录" class="headerlink" title="1 目录"></a>1 目录</h3><p>本系列旨在学习各种parser思路及技巧，分为以下几个部分</p>
 <ol start="0">
-<li>清晨入古寺—-论世间parser为何物<strong>[本篇]</strong></li>
+<li><a href="https://belyenochi.github.io/2018/08/28/parser_00/#more" target="_blank" rel="noopener"> 清晨入古寺—-论世间parser为何物<strong>[本篇]</strong></a></li>
 <li>初日照高林—-初探First集，Follow集</li>
 <li>曲径通幽处—-预测分析表的构建</li>
 <li>禅房花木深—-小试LL(1)</li>
