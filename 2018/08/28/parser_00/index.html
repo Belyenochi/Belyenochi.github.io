@@ -87,7 +87,7 @@
 <meta property="og:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/parser_00/example.jpg">
-<meta property="og:updated_time" content="2018-08-28T03:04:28.649Z">
+<meta property="og:updated_time" content="2018-08-28T03:08:05.738Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始的编译原理之旅----Parser篇(零)">
 <meta name="twitter:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
@@ -384,8 +384,8 @@
 <li>构建好预测表并选择对应能够解析该文法的算法（LL(1)等）<font color="red">【可选】</font>（可以使用yacc，Bison等解析）</li>
 <li>将输入数据读入paser<font color="red">【可选】</font>（可以手写tokenizer，也可以使用Lex生成）</li>
 </ol>
+<p>此时得到了另一种数据结构，在编译中往往是结构化的AST，当然也可以是XML或者JSON,接&gt;下来就是应用这种数据结构的事了。</p>
 <h3 id="5-parser图解"><a href="#5-parser图解" class="headerlink" title="5 parser图解"></a>5 parser图解</h3><p>由ohm.js生成的AST结构，将1+2*3映射到AST，便于大家感性理解<br><img src="/images/parser_00/example.jpg" alt=""></p>
-<p>此时得到了另一种数据结构，在编译中往往是结构化的AST，当然也可以是XML或者JSON,接下来就是应用这种数据结构的事了。</p>
 <h3 id="6-Reference"><a href="#6-Reference" class="headerlink" title="6 Reference"></a>6 Reference</h3><p><a href="https://github.com/harc/ohm" title="ohm.js" target="_blank" rel="noopener">ohm.js</a><br><a href="https://www.quora.com/What-exactly-does-parsing-mean-in-programming" title="What-exactly-does-parsing-mean-in-programming" target="_blank" rel="noopener">What-exactly-does-parsing-mean-in-programming</a><br><a href="http://www.yinwang.org/blog-cn/2015/09/19/parser" title="王垠前辈----对parser的误解" target="_blank" rel="noopener">王垠前辈—-对parser的误解</a></p>
 
       
