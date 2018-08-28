@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
+<meta name="description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 本系列文章阅读前置条件  熟悉常见的Grammar定义（Reference里有bnf、ebnf的grammar guide，不熟悉的朋友可以去看看）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始的编译原理之旅----Parser篇(零)">
 <meta property="og:url" content="http://www.woaitucao.xyz/2018/08/28/parser_00/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
-<meta property="og:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
+<meta property="og:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 本系列文章阅读前置条件  熟悉常见的Grammar定义（Reference里有bnf、ebnf的grammar guide，不熟悉的朋友可以去看看）">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/parser_00/example.jpg">
-<meta property="og:updated_time" content="2018-08-28T03:09:50.632Z">
+<meta property="og:updated_time" content="2018-08-28T07:08:43.919Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始的编译原理之旅----Parser篇(零)">
-<meta name="twitter:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物[本篇] 初日照高林—-初探First集，">
+<meta name="twitter:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 本系列文章阅读前置条件  熟悉常见的Grammar定义（Reference里有bnf、ebnf的grammar guide，不熟悉的朋友可以去看看）">
 <meta name="twitter:image" content="http://www.woaitucao.xyz/images/parser_00/example.jpg">
 
 
@@ -361,6 +361,10 @@
 
       
         <h3 id="0-序言"><a href="#0-序言" class="headerlink" title="0 序言"></a>0 序言</h3><p>自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。</p>
+<p>本系列文章阅读前置条件</p>
+<ul>
+<li>熟悉常见的Grammar定义（Reference里有bnf、ebnf的grammar guide，不熟悉的朋友可以去看看）</li>
+</ul>
 <h3 id="1-目录"><a href="#1-目录" class="headerlink" title="1 目录"></a>1 目录</h3><p>本系列旨在学习各种parser思路及技巧，分为以下几个部分</p>
 <ol start="0">
 <li><a href="https://belyenochi.github.io/2018/08/28/parser_00/#more" target="_blank" rel="noopener"> 清晨入古寺—-论世间parser为何物<strong>[本篇]</strong></a></li>
@@ -386,7 +390,7 @@
 </ol>
 <p>此时得到了另一种数据结构，在编译中往往是结构化的AST，当然也可以是XML或者JSON,接下来就是应用这种数据结构的事了。</p>
 <h3 id="5-parser图解"><a href="#5-parser图解" class="headerlink" title="5 parser图解"></a>5 parser图解</h3><p>由ohm.js生成的AST结构，将1+2*3映射到AST，便于大家感性理解<br><img src="/images/parser_00/example.jpg" alt=""></p>
-<h3 id="6-Reference"><a href="#6-Reference" class="headerlink" title="6 Reference"></a>6 Reference</h3><p><a href="https://github.com/harc/ohm" title="ohm.js" target="_blank" rel="noopener">ohm.js</a><br><a href="https://www.quora.com/What-exactly-does-parsing-mean-in-programming" title="What-exactly-does-parsing-mean-in-programming" target="_blank" rel="noopener">What-exactly-does-parsing-mean-in-programming</a><br><a href="http://www.yinwang.org/blog-cn/2015/09/19/parser" title="王垠前辈----对parser的误解" target="_blank" rel="noopener">王垠前辈—-对parser的误解</a></p>
+<h3 id="6-Reference"><a href="#6-Reference" class="headerlink" title="6 Reference"></a>6 Reference</h3><p><a href="https://github.com/harc/ohm" title="ohm.js" target="_blank" rel="noopener">ohm.js</a><br><a href="https://www.quora.com/What-exactly-does-parsing-mean-in-programming" title="What-exactly-does-parsing-mean-in-programming" target="_blank" rel="noopener">What-exactly-does-parsing-mean-in-programming</a><br><a href="http://www.yinwang.org/blog-cn/2015/09/19/parser" title="王垠前辈----对parser的误解" target="_blank" rel="noopener">王垠前辈—-对parser的误解</a><br><a href="http://matt.might.net/articles/grammars-bnf-ebnf/" title="Grammar" target="_blank" rel="noopener">Grammar</a></p>
 
       
     </div>
