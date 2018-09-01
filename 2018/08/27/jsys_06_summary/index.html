@@ -89,7 +89,7 @@
 <meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_06/instruction.jpg">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_06/memory.jpg">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_06/preDefine.jpg">
-<meta property="og:updated_time" content="2018-08-26T16:27:20.407Z">
+<meta property="og:updated_time" content="2018-09-01T06:30:36.327Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算的要素-第六章小结">
 <meta name="twitter:description" content="What’s in a name?That which we call a rose by any other name would smell as sweet 经历了前五个小节的学习，我们终于从硬件脱身了，请让我松一口气，毕竟熟悉各种各样的硬件细节可不是我的爱好…好了，现在硬件对于我们来说就是一层抽象了，工程上的优势体现了出来，抽象屏蔽使得我们在写内存管理的时候不用去思考电信号:)接下来我会总">
@@ -379,9 +379,11 @@
 <li>M     // M的默认行为是将A寄存器中的值作为地址访问该地址存储的值<br><img src="/images/jsys_06/memory.jpg" alt=""></li>
 </ol>
 <h3 id="3-符号定义"><a href="#3-符号定义" class="headerlink" title="3 符号定义"></a>3 符号定义</h3><p>符号分为3种，分别是：</p>
-<h4 id="3-1-预定义符号"><a href="#3-1-预定义符号" class="headerlink" title="3.1 预定义符号"></a>3.1 预定义符号</h4><p>预定义符号指代的是对应的符号在数据内存中的位置（RAM）</p>
-<h4 id="3-2-标签符号"><a href="#3-2-标签符号" class="headerlink" title="3.2 标签符号"></a>3.2 标签符号</h4><p><img src="/images/jsys_06/preDefine.jpg" alt=""><br>标签符号中符号对应的是指令内存中的位置（ROM），且每个标签只能被定义一次，可以在程序的任何地方使用，包括在定义位置之前，这让我联想到了JS的预定义，估计也是先扫了一遍符号表，这里的符号表和编译器前端parser的符号表不是一个概念，虽然都是对符号的某种映射，但汇编器的符号表更加底层，它将符号映射到地址，而parser的符号表是一种上下文环境，这个在后面总结parser的时候会再提到。</p>
+<h4 id="3-1-预定义符号"><a href="#3-1-预定义符号" class="headerlink" title="3.1 预定义符号"></a>3.1 预定义符号</h4><p>预定义符号指代的是对应的符号在数据内存中的位置（RAM）<br><img src="/images/jsys_06/preDefine.jpg" alt=""></p>
+<h4 id="3-2-标签符号"><a href="#3-2-标签符号" class="headerlink" title="3.2 标签符号"></a>3.2 标签符号</h4><p>标签符号中符号对应的是指令内存中的位置（ROM），且每个标签只能被定义一次，可以在程序的任何地方使用，包括在定义位置之前，这让我联想到了JS的预定义，估计也是先扫了一遍符号表，这里的符号表和编译器前端parser的符号表不是一个概念，虽然都是对符号的某种映射，但汇编器的符号表更加底层，它将符号映射到地址，而parser的符号表是一种上下文环境，这个在后面总结parser的时候会再提到。</p>
+<p>标签符号例子：<br>(LOOP) 它的作用仅仅是更新符号表，其值为下一条指令的地址，这个在x86_64的反汇编也同样，可以看到标签语句是没有对应的二进制值的</p>
 <h4 id="3-3-变量符号"><a href="#3-3-变量符号" class="headerlink" title="3.3 变量符号"></a>3.3 变量符号</h4><p>任何出现在汇编程序中的符号Xxx，不是预定义符号或标签符号，就将他作为变量符号处理，变量符号的地址默认从RAM[16]开始逐一分配,是的你没看错，逐一分配意味着在一个程序中已经废弃的变量也会永久持有内存，在第13章我会尝试用GC来解决部分堆内存问题，但这里的分配问题应该是指令集层面的考量所以除非修改分配策略否则无解。</p>
+<p>变量例子：<br>@i 这里的i可以代表循环变量，默认变量从RAM地址16处开始分配</p>
 <h3 id="4-Q-amp-A"><a href="#4-Q-amp-A" class="headerlink" title="4 Q&amp;A"></a>4 Q&amp;A</h3><ul>
 <li><p><font color="red">Q：如何完成交叉汇编程序以及生成的代码如何读取.asm的文本输入以及如何维护其符号表?</font><br><strong>A：这些在这门课都没有涉及，感兴趣的同学可以学习<a href="http://www.davidsalomon.name/assem.advertis/AssemAd.html" title="Assemblers And Loaders." target="_blank" rel="noopener">Assemblers And Loaders.</a></strong></p>
 </li>
