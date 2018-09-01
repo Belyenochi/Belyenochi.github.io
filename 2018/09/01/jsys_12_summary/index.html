@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Nand2Tetris," />
 
 
 
@@ -79,22 +79,30 @@
 
 
 
-<meta name="description" content="It’s a poor sort of memory that only works backward.—- Lewis Carroll 1 背景时钟（Clock）：其精确的硬件实现通常基于振荡器，其在两个信号值0-1，或称“高-低电平”。两个相邻的信号上升沿称为时钟周期，时钟周期非常重要，所有的时序逻辑都是基于时钟周期的，比如写入内存（读取内存是个时序无关操作），内存值的真实修改（假设当前时钟周">
+<meta name="description" content="本章是针对Hack OS各个模块的概述及其实现，其中某几个模块实现的算法很有意思，让我们马上开始吧~ 1 什么是OS（以Hack OS为例） 以一种对软件友好的方式封装了不同的硬件服务 用不同的函数和抽象数据类型扩展了高级语言。在这个意义上的操作系统与语言的标准程序库的分界线就不那么明显。事实上，某些现代语言（例如Java）就趋向于将很多经典的操作系统服务（比如GUI管理，内存管理，和多任务处理等">
+<meta name="keywords" content="Nand2Tetris">
 <meta property="og:type" content="article">
-<meta property="og:title" content="计算的要素-第三章小结">
-<meta property="og:url" content="http://www.woaitucao.xyz/2018/08/01/jsys_03_summary/index.html">
+<meta property="og:title" content="计算的要素第十二章总结">
+<meta property="og:url" content="http://www.woaitucao.xyz/2018/09/01/jsys_12_summary/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
-<meta property="og:description" content="It’s a poor sort of memory that only works backward.—- Lewis Carroll 1 背景时钟（Clock）：其精确的硬件实现通常基于振荡器，其在两个信号值0-1，或称“高-低电平”。两个相邻的信号上升沿称为时钟周期，时钟周期非常重要，所有的时序逻辑都是基于时钟周期的，比如写入内存（读取内存是个时序无关操作），内存值的真实修改（假设当前时钟周">
+<meta property="og:description" content="本章是针对Hack OS各个模块的概述及其实现，其中某几个模块实现的算法很有意思，让我们马上开始吧~ 1 什么是OS（以Hack OS为例） 以一种对软件友好的方式封装了不同的硬件服务 用不同的函数和抽象数据类型扩展了高级语言。在这个意义上的操作系统与语言的标准程序库的分界线就不那么明显。事实上，某些现代语言（例如Java）就趋向于将很多经典的操作系统服务（比如GUI管理，内存管理，和多任务处理等">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_03/DFF.jpg">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_03/memories.jpg">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_03/compare.jpg">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_03/architecture.png">
-<meta property="og:updated_time" content="2018-08-05T14:46:23.916Z">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/乘法.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/除法.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/二叉树.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/malloc.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/delloc.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/sanjiao.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/sanjiaoxing.png">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/circle.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/keyboard.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/readchar.jpg">
+<meta property="og:image" content="http://www.woaitucao.xyz/images/jsys_12/readLine.jpg">
+<meta property="og:updated_time" content="2018-09-01T15:21:48.311Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="计算的要素-第三章小结">
-<meta name="twitter:description" content="It’s a poor sort of memory that only works backward.—- Lewis Carroll 1 背景时钟（Clock）：其精确的硬件实现通常基于振荡器，其在两个信号值0-1，或称“高-低电平”。两个相邻的信号上升沿称为时钟周期，时钟周期非常重要，所有的时序逻辑都是基于时钟周期的，比如写入内存（读取内存是个时序无关操作），内存值的真实修改（假设当前时钟周">
-<meta name="twitter:image" content="http://www.woaitucao.xyz/images/jsys_03/DFF.jpg">
+<meta name="twitter:title" content="计算的要素第十二章总结">
+<meta name="twitter:description" content="本章是针对Hack OS各个模块的概述及其实现，其中某几个模块实现的算法很有意思，让我们马上开始吧~ 1 什么是OS（以Hack OS为例） 以一种对软件友好的方式封装了不同的硬件服务 用不同的函数和抽象数据类型扩展了高级语言。在这个意义上的操作系统与语言的标准程序库的分界线就不那么明显。事实上，某些现代语言（例如Java）就趋向于将很多经典的操作系统服务（比如GUI管理，内存管理，和多任务处理等">
+<meta name="twitter:image" content="http://www.woaitucao.xyz/images/jsys_12/乘法.jpg">
 
 
 
@@ -124,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://www.woaitucao.xyz/2018/08/01/jsys_03_summary/"/>
+  <link rel="canonical" href="http://www.woaitucao.xyz/2018/09/01/jsys_12_summary/"/>
 
 
 
 
 
-  <title>计算的要素-第三章小结 | The Tao of Jason</title>
+  <title>计算的要素第十二章总结 | The Tao of Jason</title>
   
 
 
@@ -281,7 +289,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.woaitucao.xyz/2018/08/01/jsys_03_summary/">
+    <link itemprop="mainEntityOfPage" href="http://www.woaitucao.xyz/2018/09/01/jsys_12_summary/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jason">
@@ -298,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">计算的要素-第三章小结</h1>
+          <h1 class="post-title" itemprop="name headline">计算的要素第十二章总结</h1>
         
 
         <div class="post-meta">
@@ -310,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T15:15:38+08:00">
-                2018-08-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-01T23:05:16+08:00">
+                2018-09-01
               </time>
             
 
@@ -321,28 +329,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机体系结构/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机体系结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -351,8 +337,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/01/jsys_03_summary/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/01/jsys_03_summary/" itemprop="commentsCount"></span>
+                <a href="/2018/09/01/jsys_12_summary/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/09/01/jsys_12_summary/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -385,18 +371,56 @@
       
 
       
-        <p><em>It’s a poor sort of memory that only works backward.—- Lewis Carroll</em></p>
-<h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景</h3><p><strong>时钟（Clock）</strong>：其精确的硬件实现通常基于振荡器，其在两个信号值0-1，或称“高-低电平”。两个相邻的信号上升沿称为时钟周期，时钟周期非常重要，所有的时序逻辑都是基于时钟周期的，比如写入内存（读取内存是个时序无关操作），内存值的真实修改（假设当前时钟周期进行写入内存操作）是发生在下一个时钟周期上升沿的时候，可以参见书本的多路转换DFF实现。</p>
-<p><strong>触发器（Filp-Flops）</strong>：此项目采用DFF（Data Filp-Flops），DFF有个时钟输入，根据主时钟信号连续地交变。数据和时钟的输入使得DFF能够实现基于时间行为out（t）=in（t-1）</p>
-<p><strong>寄存器（register）</strong>：这里的寄存器指的是广义上的存储设备，并不仅仅是通常意义上的CPU内的register，它的存储行为是out（t）=out（t-1），也就是说他能够输出他上一个时钟周期的输入，并通过Mux（多路转换器）在条件允许（load控制）时输出至输入信号，这也就说明了它为什么能够维持自身的“状态”</p>
-<p><img src="/images/jsys_03/DFF.jpg" alt=""></p>
-<h3 id="2-Memories"><a href="#2-Memories" class="headerlink" title="2 Memories"></a>2 Memories</h3><p>作为一个程序员，和内存打交道的时候还是很多的，所以让我们来重点看看内存这个家伙的构造。<br><img src="/images/jsys_03/memories.jpg" alt=""><br>如图3.3所示，内存可以通过将很多寄存器堆叠起来形成随机存取RAM单元来实现。随机存取内存（RAM）这个概念由此得来：在RAM上能够随机访问被选择的字而不会受限于访问顺序。也就是说，我们要求内存中的任何字（无论具体物理位置在哪里）都能以相等的速度被直接访问。</p>
-<p><font color="red">说到这里在数据结构课上老师说的，同学们，我们的数组具有随机性啊，随机性，当时还不太清楚这个随机性到底是怎么实现的，那么现在就真相大白了，数组的随机性实际上就是指RAM的随机性（数组可以理解成在内存中连续的片断，连续很重要，实际上在编译器层面对数组的处理也是看成一段连续的内存）</font><br>那么现在让我们一起看看RAM的随机性是如何实现的；-)</p>
-<p>注意图3.3的输入管脚有一个address，那么实际上<strong>内存是由8个16位寄存器构成的</strong>（假定），那么在address处输入的就是3位的电信号，聪明的大家已经想到了，通过3位的电信号经过DMux（多路选择器）选择出一个唯一的8位寄存器位置，比如输入010，那么第一个0代表选择了前二分之一个内存区域（以寄存器数量为单位），010-&gt;前四个中的后两个中的第一个，完美的命中了第三个寄存器位置，你看这就完成了内存寻址。。是不是没有你想的那么复杂，当然真实环境下的内存肯定比这里来的复杂，但是这里探索的是模型和原理，具体的细节欢迎大家在评论下面补充说明。</p>
-<h3 id="3-时序芯片和逻辑芯片的比较"><a href="#3-时序芯片和逻辑芯片的比较" class="headerlink" title="3 时序芯片和逻辑芯片的比较"></a>3 时序芯片和逻辑芯片的比较</h3><p><img src="/images/jsys_03/compare.jpg" alt=""><br>前面说到的组合逻辑芯片的输出随其输入的变化而变化，而不去考虑时间。相比之下，时序结构中包含的DFF保证了它们的输出变化仅仅发生在一个时钟周期到下一个时钟周期的转换点上（比如上升沿），而不在时钟周期内。实际上，我们允许时序芯片在时钟周期之内出现不稳定的状态，但是必须保证在下一个时钟周期的起始点，其输出值是正确的</p>
-<p><strong>时序芯片输出这种“离散化（discretization）”过程有个重要作用：它能被用来对整个计算机系统进行同步。</strong><br>假设指示ALU计算x+y，x和y分别属于距离ALU远近程度不一的RAM（远近程度说明了他们有效的电信号到达ALU的时间），那么由于他俩在不同时刻到达ALU而ALU作为一个组合逻辑毫无时序的概念，它只会不停的从输入管脚读取数据，那么在ALU的两端输入达到稳定前，它只会不断的产生垃圾值。那么如何解决这个问题呢？既然ALU会在某个时间点给出正确的输出并且达到稳定（持续的正确输出..个人理解），在此前是输出垃圾值，那么就可以将ALU的输出连接至一个时序逻辑设备，这个设备在时钟上升沿的时候读取来自ALU的输入，那么如何保证此时读取的输入是正确的呢？这就涉及到了计算机时钟的设定，规定计算机时钟周期的长度要比1个比特在计算机系统中两个物理距离最长的芯片之间传输的时间稍长。这样就<br>能在时间上保证时序芯片得到了有效的输入值（在下个时钟周期的上升沿）。</p>
-<p>通过时序芯片    ，可以将一个个独立的硬件同步为一个协调统一的系统。（第五章小结会有后续说明）</p>
-<h3 id="4-本章架构图"><a href="#4-本章架构图" class="headerlink" title="4 本章架构图"></a>4 本章架构图</h3><p><img src="/images/jsys_03/architecture.png" alt=""></p>
+        <p>本章是针对Hack OS各个模块的概述及其实现，其中某几个模块实现的算法很有意思，让我们马上开始吧~</p>
+<h3 id="1-什么是OS（以Hack-OS为例）"><a href="#1-什么是OS（以Hack-OS为例）" class="headerlink" title="1 什么是OS（以Hack OS为例）"></a>1 什么是OS（以Hack OS为例）</h3><ol>
+<li>以一种对软件友好的方式封装了不同的硬件服务</li>
+<li>用不同的函数和抽象数据类型扩展了高级语言。在这个意义上的操作系统与语言的标准程序库的分界线就不那么明显。事实上，某些现代语言（例如Java）就趋向于将很多经典的操作系统服务（比如GUI管理，内存管理，和多任务处理等）连同很多语言拓展一起打包到其标准程序库中，这么做的目的以我的理解是为了屏蔽系统层面的差异（比如C的fopen等）以及减少系统调用（比如Java的内存管理，向内存申请一大片空间，Java NIO等）</li>
+</ol>
+<h3 id="2-为什么我们需要OS"><a href="#2-为什么我们需要OS" class="headerlink" title="2 为什么我们需要OS"></a>2 为什么我们需要OS</h3><p>计算机是用来解决实际问题的，所以我们构建计算机硬件用来计算，基于硬件我们造了编译器用来写更可读的汇编程序，然后有了用汇编程序写的应用，随着应用程序越来越到，我们需要抽象出能够将控制（硬件和外围设备以及软件）和分配资源的常用功能集一体的概念，它就是Operating System，感兴趣的同学可以看看操作系统的演化。（有时间去研究研究发出来）<br>计算机系统的基本目标是执行用户程序并以更容易的方式解决用户的问题。</p>
+<h3 id="3-数学操作"><a href="#3-数学操作" class="headerlink" title="3 数学操作"></a>3 数学操作</h3><p>首先，这里明确的告诉了我下意识想到的通过累加和累减来实现乘除法来操作系统层面是不可行的，原因很简单，效率太低了高达O（n）的输入敏感复杂度会让计算一个100000000000000*10000000000000的人在凳子上坐上几天（只是举个例子，数据不具备代表性），那么就让我们来看一看Hack OS的做法</p>
+<font color="red">注：以下所有运算都假定操作数为16位（Hacl硬件规范字长16位）</font>
+
+<h4 id="3-1-乘法"><a href="#3-1-乘法" class="headerlink" title="3.1 乘法"></a>3.1 乘法</h4><p><img src="/images/jsys_12/乘法.jpg" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> sum = <span class="number">0</span>,index = <span class="number">15</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(index &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (y.toString(<span class="number">2</span>).padStart(<span class="number">16</span>,<span class="string">"0"</span>).charAt(index) !== <span class="string">"0"</span>) &#123;</span><br><span class="line">        	<span class="built_in">console</span>.log(y, index,y.toString(<span class="number">2</span>).padStart(<span class="number">16</span>,<span class="string">"0"</span>));</span><br><span class="line">             sum = sum + x;</span><br><span class="line">        &#125;</span><br><span class="line">        x = x + x;</span><br><span class="line">       index = index - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到实际上乘法就是在模拟我们日常生活中的乘法，通过逐位相乘，并且再每一次乘完以后将被乘数左移一位，迭代这个过程直到遍历完所有位数，在日常生活中我们看到某个算术53*20，当我们处理完5这一位不会再用0去乘20，但是在计算机中你需要一套规则去运算，这套规则在这里就是遍历完操作数的所有位，即便它全是0。</p>
+<h4 id="3-2-除法"><a href="#3-2-除法" class="headerlink" title="3.2 除法"></a>3.2 除法</h4><p><img src="/images/jsys_12/除法.jpg" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">divide</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> q,result,flag;</span><br><span class="line"></span><br><span class="line">    flag = !((x &lt; <span class="number">0</span>) ^ (y &lt; <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    x = <span class="built_in">Math</span>.abs(x);</span><br><span class="line">    y = <span class="built_in">Math</span>.abs(y);</span><br><span class="line">    <span class="keyword">if</span>(y &gt; x) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    q = divide(x,y + y);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x - (<span class="number">2</span> * q * y) &lt; y) &#123;</span><br><span class="line">        result = q + q;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        result = q + q + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> flag ? result : -result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路也是模仿人除法的过程，选择一个尽可能从x上减去y的最大倍数（假定算式x/y），直到y比x大，这个过程的递归形式如上。</p>
+<h4 id="3-3-平方根"><a href="#3-3-平方根" class="headerlink" title="3.3 平方根"></a>3.3 平方根</h4><p><img src="/images/jsys_12/二叉树.jpg" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sqrt</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> y,j,temp,tempQ;</span><br><span class="line"></span><br><span class="line">    y = <span class="number">0</span>;</span><br><span class="line">    j = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(j &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">      temp = y + <span class="built_in">Math</span>.pow(<span class="number">2</span>,j);</span><br><span class="line">      tempQ = temp * temp;</span><br><span class="line">      <span class="comment">//avoid overflow</span></span><br><span class="line">      <span class="keyword">if</span>((tempQ &lt;= x) &amp; (tempQ &gt; <span class="number">0</span>))&#123;</span><br><span class="line">        y = temp;</span><br><span class="line">      &#125;</span><br><span class="line">      j = j - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个算法就是根据y²&lt;= x &lt;(y+1)²，使得y从0开始逐步逼近x使得y满足上述区间</p>
+<h3 id="4-内存管理"><a href="#4-内存管理" class="headerlink" title="4 内存管理"></a>4 内存管理</h3><p>内存管理很有趣，首先说一说内存管理的背景</p>
+<h4 id="4-1-背景"><a href="#4-1-背景" class="headerlink" title="4.1 背景"></a>4.1 背景</h4><p>计算机的程序会声明并使用各种类型的变量，包括整数、布尔数等简单的数据类型以及如数组、对象等复杂的数据类型。高级语言的最大优点之一是程序员不必关心内存管理细节：比如为变量分配内存空间；以及当该变量不再使用时，回收为其分配的内存空间。所有关于内存管理的琐碎工作都由编译器、操作系统和虚拟机在后端完成。<br>不同的变量的内存在程序生命周期中的不同时刻被分配。例如，<strong>静态变量</strong>在编译期间由编译器为其分配内存，而<strong>局部变量</strong>则在每个子程序开始运行时被分配在堆栈内。其他变量的内存则是在程序的执行过程中被动态分配，这时候OS就要上了。<font color="red">注意操作系统本身并不自带垃圾回收功能，这是高级语言提供的内存管理手段，比如Java，JVM先向OS请求一大块内存用于程序运行，然后在这块内存中可以“自动内存管理”，本质是在OS层面之上进行内存管理，这样就不用频繁的调用系统的malloc，free了</font></p>
+<p>在OS看来内存其实就是一块大数组（big buffer），当然真实的内存实现我们已经在之前看到过了(多个Register-&gt;多个RAM-&gt;Memory)。</p>
+<h4 id="4-2-内存管理算法"><a href="#4-2-内存管理算法" class="headerlink" title="4.2 内存管理算法"></a>4.2 内存管理算法</h4><h5 id="4-2-1-alloc"><a href="#4-2-1-alloc" class="headerlink" title="4.2.1 alloc"></a>4.2.1 alloc</h5><p><img src="/images/jsys_12/malloc.jpg" alt=""><br>上图的freeList的节点乍看可能有点疑惑，其实这里的freeList是经历过deAlloc的，一开是freeList只有一个节点就是整块内存区，然后随着alloc-deAlloc，链表节点逐渐增多，碎片化也越来越严重…</p>
+<h5 id="4-2-2-deAlloc"><a href="#4-2-2-deAlloc" class="headerlink" title="4.2.2 deAlloc"></a>4.2.2 deAlloc</h5><p><img src="/images/jsys_12/delloc.jpg" alt=""><br>deAlloc的算法其实可以总结如下：<br>假设待释放节点值为o</p>
+<ol>
+<li>找到freeList中节点的地址值比待释放节点值大的节点（A）</li>
+<li>将待释放的节点的next域设为A的地址<br>3.将A的上一个节点的next域设为o</li>
+</ol>
+<p>然而我刚开始的做法是：</p>
+<ol>
+<li>将o的next域设为freeList指向的节点</li>
+<li>修改freeList指向o的地址（这和上图Mark的做法有点出路，个人觉得这样头插效率比根据Address来的高且简单）<br>当然我所谓的优于，是建立在没有合并的基础上的…</li>
+</ol>
+<h5 id="4-2-3-defragmentation（碎片合并）"><a href="#4-2-3-defragmentation（碎片合并）" class="headerlink" title="4.2.3 defragmentation（碎片合并）"></a>4.2.3 defragmentation（碎片合并）</h5><p>细心的读者已经发现了，上图中还包含这碎片合并的动作，这个碎片合并的动作如果链表不是根据address有序的话复杂度是O（n²）级别的，这带来的直接后果就是，咦，为什么我的程序关的这么慢。。。所以我们在deAlloc的时候要用第一个算法的原因就是如此。</p>
+<p>defragmentation算法如下：<br>1.遍历链表<br>2.如果当前节点的地址值+size+1（存储size的存储单元） = 下一个节点的地址，merge</p>
+<h3 id="5-输入输出管理"><a href="#5-输入输出管理" class="headerlink" title="5 输入输出管理"></a>5 输入输出管理</h3><p>这部分我就说两个比较有意思的地方</p>
+<h4 id="5-1-输出"><a href="#5-1-输出" class="headerlink" title="5.1 输出"></a>5.1 输出</h4><h5 id="5-1-1-绘制三角形"><a href="#5-1-1-绘制三角形" class="headerlink" title="5.1.1 绘制三角形"></a>5.1.1 绘制三角形</h5><p><img src="/images/jsys_12/sanjiao.jpg" alt=""><br>这里说绘制三角形，不如说如何模拟三角形，实际上我们画出的三角形是以堆砌一个个像素形成的，可以把像素看出3*1的正方形，而绘制三角形的过程，就是如何堆砌正方形让它更像三角形，下面是过程图示<br><img src="/images/jsys_12/sanjiaoxing.png" alt=""></p>
+<p><strong>图中最关键的一点在于    当前的坐标斜率&lt;=(y2-y1)/(x2-x1),a++，否则b++</strong></p>
+<h5 id="5-1-2-绘制圆"><a href="#5-1-2-绘制圆" class="headerlink" title="5.1.2 绘制圆"></a>5.1.2 绘制圆</h5><p><img src="/images/jsys_12/circle.jpg" alt=""><br>绘制圆的本质就是绘制一系列的矩形，算法如上</p>
+<h4 id="5-2-输入"><a href="#5-2-输入" class="headerlink" title="5.2 输入"></a>5.2 输入</h4><p>这一部分主要描述操作系统如何在三个递增的抽象层级上来管理面向文本的输入：</p>
+<ol>
+<li>捕获单字符输入</li>
+<li>捕获多字符输入</li>
+<li>捕获多字符输入（也就是字符串）</li>
+</ol>
+<h5 id="5-2-1-侦测键盘输入"><a href="#5-2-1-侦测键盘输入" class="headerlink" title="5.2.1 侦测键盘输入"></a>5.2.1 侦测键盘输入</h5><p><img src="/images/jsys_12/keyboard.jpg" alt=""><br>在底层捕获键盘输入时，程序直接从硬件获取数据，并确定用户当前按下哪个键。对该原始数据的访问依赖于键盘接口的具体特性。比如，若接口是被键盘持续更新的内存映像（比如Hack），就可以通过检测对应的内存映像来确定按下了哪个键</p>
+<h5 id="5-2-2-读取单一字符"><a href="#5-2-2-读取单一字符" class="headerlink" title="5.2.2 读取单一字符"></a>5.2.2 读取单一字符</h5><p><img src="/images/jsys_12/readchar.jpg" alt=""></p>
+<h5 id="5-2-3-读取字符串"><a href="#5-2-3-读取字符串" class="headerlink" title="5.2.3 读取字符串"></a>5.2.3 读取字符串</h5><p><img src="/images/jsys_12/readLine.jpg" alt=""></p>
+<p><strong>其他模块String，Array，Output，Sys是在以上模块上的封装，具体的实现细节就参考书吧。</strong></p>
+<h3 id="6-Q-amp-A"><a href="#6-Q-amp-A" class="headerlink" title="6 Q&amp;A"></a>6 Q&amp;A</h3><p>Q：关于平方根算法有更高效的算法吗？<br>A：除了书中提到的牛顿法求平方根（不动点算法），泰勒展开，<a href="http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/A-more-efficient-square-root-algorithm-td4028140.htmla" title="这里" target="_blank" rel="noopener">这里</a>实现了一个长除法的实现，除了平方根算法，书中对于圆的绘制也有<a href="http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Fast-circle-algorithm-td4030808.html" title="更高效的算法" target="_blank" rel="noopener">更高效的算法</a></p>
+<h3 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7 Reference"></a>7 Reference</h3><p><a href="http://sites.google.com/site/johnkennedyshome/home/downloadable-papers/bcircle.pdf" title="用于绘制圆的快速Bresenham型算法，John Kennedy" target="_blank" rel="noopener">用于绘制圆的快速Bresenham型算法，John Kennedy</a><br><a href="https://sites.google.com/site/johnkennedyshome/home/downloadable-papers/bcircle.pdf?attredirects=0" title="用于绘制椭圆的快速Bresenham型算法，John Kennedy" target="_blank" rel="noopener">用于绘制椭圆的快速Bresenham型算法，John Kennedy</a></p>
 
       
     </div>
@@ -412,6 +436,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Nand2Tetris/" rel="tag"># Nand2Tetris</a>
+          
+        </div>
+      
 
       
       
@@ -421,8 +451,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/31/jsys_02_summary/" rel="next" title="计算的要素-第二章小结">
-                <i class="fa fa-chevron-left"></i> 计算的要素-第二章小结
+              <a href="/2018/08/31/iterator-00/" rel="next" title="迭代器实现（零）">
+                <i class="fa fa-chevron-left"></i> 迭代器实现（零）
               </a>
             
           </div>
@@ -430,10 +460,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/02/jsys_04_summary/" rel="prev" title="计算的要素-第四章小结">
-                计算的要素-第四章小结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -571,7 +597,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-背景"><span class="nav-text">1 背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Memories"><span class="nav-text">2 Memories</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-时序芯片和逻辑芯片的比较"><span class="nav-text">3 时序芯片和逻辑芯片的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-本章架构图"><span class="nav-text">4 本章架构图</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是OS（以Hack-OS为例）"><span class="nav-text">1 什么是OS（以Hack OS为例）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-为什么我们需要OS"><span class="nav-text">2 为什么我们需要OS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-数学操作"><span class="nav-text">3 数学操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-乘法"><span class="nav-text">3.1 乘法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-除法"><span class="nav-text">3.2 除法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-平方根"><span class="nav-text">3.3 平方根</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-内存管理"><span class="nav-text">4 内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-背景"><span class="nav-text">4.1 背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-内存管理算法"><span class="nav-text">4.2 内存管理算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-1-alloc"><span class="nav-text">4.2.1 alloc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-2-deAlloc"><span class="nav-text">4.2.2 deAlloc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-defragmentation（碎片合并）"><span class="nav-text">4.2.3 defragmentation（碎片合并）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-输入输出管理"><span class="nav-text">5 输入输出管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-输出"><span class="nav-text">5.1 输出</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-1-绘制三角形"><span class="nav-text">5.1.1 绘制三角形</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-2-绘制圆"><span class="nav-text">5.1.2 绘制圆</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-输入"><span class="nav-text">5.2 输入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-1-侦测键盘输入"><span class="nav-text">5.2.1 侦测键盘输入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-2-读取单一字符"><span class="nav-text">5.2.2 读取单一字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-3-读取字符串"><span class="nav-text">5.2.3 读取字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Q-amp-A"><span class="nav-text">6 Q&amp;A</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Reference"><span class="nav-text">7 Reference</span></a></li></ol></div>
             
 
           </div>
