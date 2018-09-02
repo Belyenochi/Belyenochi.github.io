@@ -87,7 +87,7 @@
 <meta property="og:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 本系列文章阅读前置条件  熟悉常见的Grammar定义（Reference里有bnf、ebnf的grammar guide，不熟悉的朋友可以去看看）">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/parser_00/example.jpg">
-<meta property="og:updated_time" content="2018-08-28T07:08:43.919Z">
+<meta property="og:updated_time" content="2018-09-02T11:54:27.888Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始的编译原理之旅----Parser篇(零)">
 <meta name="twitter:description" content="0 序言自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。 本系列文章阅读前置条件  熟悉常见的Grammar定义（Reference里有bnf、ebnf的grammar guide，不熟悉的朋友可以去看看）">
@@ -370,10 +370,10 @@
 <li><a href="https://belyenochi.github.io/2018/08/28/parser_00/#more" target="_blank" rel="noopener"> 清晨入古寺—-论世间parser为何物<strong>[本篇]</strong></a></li>
 <li>初日照高林—-初探First集，Follow集</li>
 <li>曲径通幽处—-预测分析表的构建</li>
-<li>禅房花木深—-小试LL(1)</li>
-<li>山光悦鸟性—-再看LR(K)</li>
+<li>禅房花木深—-实现LL(1) parser</li>
+<li>山光悦鸟性—-递归下降的两种实现</li>
 <li>潭影空人心—-浅谈SLR，LALR(1)</li>
-<li>万籁此俱寂—-parser grammar</li>
+<li>万籁此俱寂—-parser combinator（从ohm.js源码说起）</li>
 <li>但余钟磬音—-反思与总结</li>
 </ol>
 <h3 id="2-论世间parser为何物"><a href="#2-论世间parser为何物" class="headerlink" title="2 论世间parser为何物"></a>2 论世间parser为何物</h3><p>以下为王垠前辈原文的科普，Reference会提及建议大家读一读，说起来自己入了PL的坑还是看垠神的博客开始的。</p>
