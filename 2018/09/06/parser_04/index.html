@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇主要阐述使用递归下降非回溯或回溯解析LL(1)文法，并比较两者优缺点 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建   禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现 [本篇]  潭影空人心—-浅谈recurs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始的编译原理之旅----Parser篇(四)">
+<meta property="og:url" content="http://www.woaitucao.xyz/2018/09/06/parser_04/index.html">
+<meta property="og:site_name" content="The Tao of Jason">
+<meta property="og:description" content="本篇主要阐述使用递归下降非回溯或回溯解析LL(1)文法，并比较两者优缺点 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建   禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现 [本篇]  潭影空人心—-浅谈recurs">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-06T13:51:39.446Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从零开始的编译原理之旅----Parser篇(四)">
+<meta name="twitter:description" content="本篇主要阐述使用递归下降非回溯或回溯解析LL(1)文法，并比较两者优缺点 1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建   禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现 [本篇]  潭影空人心—-浅谈recurs">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.woaitucao.xyz/2018/09/06/parser_04/"/>
+
+
+
+
+
+  <title>从零开始的编译原理之旅----Parser篇(四) | The Tao of Jason</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">The Tao of Jason</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.woaitucao.xyz/2018/09/06/parser_04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jason">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Tao of Jason">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从零开始的编译原理之旅----Parser篇(四)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T21:39:10+08:00">
+                2018-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/06/parser_04/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/09/06/parser_04/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇主要阐述使用递归下降非回溯或回溯解析LL(1)文法，并比较两者优缺点</p>
+<h3 id="1-目录"><a href="#1-目录" class="headerlink" title="1 目录"></a>1 目录</h3><p>本系列旨在学习各种parser思路及技巧，分为以下几个部分</p>
+<ol start="0">
+<li><a href="https://belyenochi.github.io/2018/08/28/parser_00/#more" target="_blank" rel="noopener"> 清晨入古寺—-论世间parser为何物</a></li>
+<li><a href="https://belyenochi.github.io/2018/09/03/parser_01/#more" target="_blank" rel="noopener"> 初日照高林—-初探First集，Follow集 </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_02/#more" target="_blank" rel="noopener"> 曲径通幽处—-预测分析表的构建 </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more" target="_blank" rel="noopener"> 禅房花木深—-实现LL(1) parser </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more" target="_blank" rel="noopener"> 山光悦鸟性—-递归下降的两种实现 <strong>[本篇]</strong> </a></li>
+<li>潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1))</li>
+<li>万籁此俱寂—-parser combinator（从ohm.js源码说起）</li>
+<li>但余钟磬音—-反思与总结</li>
+</ol>
+<h3 id="2-什么是递归下降？"><a href="#2-什么是递归下降？" class="headerlink" title="2 什么是递归下降？"></a>2 什么是递归下降？</h3><p>一个递归下降语法分析程序由一组过程组成，每个非终结符有一个对应的过程。程序的执行从开始符号对应的过程开始，如果这个过程扫描了整个输入串，它就停止执行并宣布语法分析成功完成。<br>举一个直观的栗子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	Grammar:</span></span><br><span class="line"><span class="comment">		S-&gt;cAd</span></span><br><span class="line"><span class="comment">		A-&gt;ab|a</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">compilerEngile</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(input) &#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	compilerS() &#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	compilerA() &#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	run() &#123;</span><br><span class="line">		<span class="keyword">this</span>.compilerS(); <span class="comment">// Start !!!</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<font color="red">使用递归下降解析文法通俗的讲就是调用compilerS()根据函数调用是否成功（判断是否有非法字符串）且输入串是否完全匹配（是否有多余字符）来判断解析是否成功</font><br>### 3 为什么使用递归下降解析LL（1）文法<br>上一章介绍了使用显式的维护一个stack来解析LL（1）文法，这种方法不如直接使用递归隐式的维护call stack来的直观，<font color="blue">本质上两者是等价的，唯一的区别是一个使用了系统的控制流一个自己构造控制流。</font>
+
+<h3 id="4-递归下降的预测分析（不带回溯）"><a href="#4-递归下降的预测分析（不带回溯）" class="headerlink" title="4 递归下降的预测分析（不带回溯）"></a>4 递归下降的预测分析（不带回溯）</h3><p>这种递归下降属于递归下降中一种特殊的情况，不需要回溯的前提是LL（1）文法中每个非终结符的产生式<font color="red">不存在可以合并的左公因子</font>,举个栗子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	Grammar:</span></span><br><span class="line"><span class="comment">		S-&gt;sAd</span></span><br><span class="line"><span class="comment">		A-&gt;ab|c</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">compilerEngile</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(input) &#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	compilerS() &#123;</span><br><span class="line">		eat(<span class="string">'s'</span>);</span><br><span class="line">		<span class="keyword">this</span>.compilerA();</span><br><span class="line">		eat(<span class="string">'d'</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	compilerA() &#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">this</span>.input[cursor] === <span class="string">'a'</span>) &#123;</span><br><span class="line">			eat(<span class="string">'a'</span>);</span><br><span class="line">			eat(<span class="string">'b'</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">this</span>.input[cursor] === <span class="string">'c'</span>) &#123;</span><br><span class="line">			eat(<span class="string">'c'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	run() &#123;</span><br><span class="line">		<span class="keyword">this</span>.compilerS(); <span class="comment">// Start !!!</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码如上，可以看出并不需要回溯，但是我们来分析一下之前定义的文法，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">	Grammar:</span><br><span class="line">		S-&gt;sAd</span><br><span class="line">		A-&gt;ab|a</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+<p>你会发现在解析A这个终结符的时候，hmmm，它第一个字母竟然是相同的也就是说没办法通过第一个字母来区分进入哪个分支，你可能会觉得这时候看第二个不就行了吗，是行了，不过因为这里的例子简单，看第二个字母的hack不会太丑，实际上编程语言的解析比这复杂很多，如果一直写，看第二个，看第三个的代码，那么代码会异常难看（我第一次不信邪的写出来过），还有同学可能会觉得这时候手动合并左公因子就行了嘛，嗯，这确实是一种方法，实际上一种更为优雅的方式就是<strong>回溯</strong>，通过回溯进入每一个分支看看是否正确。</p>
+<h3 id="5-递归下降的预测分析（带回溯）"><a href="#5-递归下降的预测分析（带回溯）" class="headerlink" title="5 递归下降的预测分析（带回溯）"></a>5 递归下降的预测分析（带回溯）</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	Grammar:</span></span><br><span class="line"><span class="comment">		S-&gt;sAd</span></span><br><span class="line"><span class="comment">		A-&gt;ab|a</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">compilerEngile</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(input) &#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	compilerS() &#123;</span><br><span class="line">		eat(<span class="string">'s'</span>);</span><br><span class="line">		<span class="keyword">this</span>.compilerA();</span><br><span class="line">		eat(<span class="string">'d'</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	compilerA() &#123;</span><br><span class="line">		<span class="keyword">if</span>(firstOf(A) === <span class="string">'a'</span>) &#123;</span><br><span class="line">			eat(<span class="string">'a'</span>);</span><br><span class="line">			eat(<span class="string">'b'</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span>(firstOf(A) === <span class="string">'c'</span>) &#123;</span><br><span class="line">			eat(<span class="string">'c'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	run() &#123;</span><br><span class="line">		<span class="keyword">this</span>.compilerS(); <span class="comment">// Start !!!</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里又出现一个问题，假如进行回溯那么意味着要遍历所有分支，假如有n个非终结符，m个产生式，那么时间复杂度就是O（n*m），这势必会降低效率，所以会采取一些优化，比如使用动态规划缓存结果，之后在讲解ohm.js源码的时候会详述 Incremental Packrat Parsing（递归下降回溯的优化），计算机科学嘛总是要在空间和时间之间做一个trade off。</p>
+<p>到底使用表驱动的非递归预测分析算法还是采用递归下降就要看需求仁者见仁智者见智了。</p>
+<h3 id="6-递归下降的非回溯实现"><a href="#6-递归下降的非回溯实现" class="headerlink" title="6 递归下降的非回溯实现"></a>6 递归下降的非回溯实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> assert = <span class="built_in">require</span>(<span class="string">'assert'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	Grammar:</span></span><br><span class="line"><span class="comment">		S-&gt;sAd</span></span><br><span class="line"><span class="comment">		A-&gt;ab|c</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">compilerEngile</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(input) &#123;</span><br><span class="line">        <span class="keyword">this</span>.input  = input;</span><br><span class="line">        <span class="keyword">this</span>.cursor = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compilerS() &#123;</span><br><span class="line">        <span class="keyword">this</span>.eat(<span class="string">'s'</span>);</span><br><span class="line">        <span class="keyword">this</span>.compilerA();</span><br><span class="line">        <span class="keyword">this</span>.eat(<span class="string">'d'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compilerA() &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.input[<span class="keyword">this</span>.cursor] === <span class="string">'a'</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.eat(<span class="string">'a'</span>);</span><br><span class="line">            <span class="keyword">this</span>.eat(<span class="string">'b'</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">this</span>.input[<span class="keyword">this</span>.cursor] === <span class="string">'c'</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.eat(<span class="string">'c'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    run() &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.compilerS(); <span class="comment">// Start !!!</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.input.length !== <span class="keyword">this</span>.cursor) &#123; <span class="comment">// deal with Extra unmatched characters</span></span><br><span class="line">                <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">`unexpected Extra unmatched characters with <span class="subst">$&#123;<span class="keyword">this</span>.input.slice(<span class="keyword">this</span>.cursor)&#125;</span>`</span> +</span><br><span class="line">                 <span class="string">`at position <span class="subst">$&#123;<span class="keyword">this</span>.cursor&#125;</span> in inputstring: <span class="subst">$&#123;<span class="keyword">this</span>.input&#125;</span>`</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`Error: <span class="subst">$&#123;e.message&#125;</span>`</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    eat(inputChar) &#123;</span><br><span class="line">        <span class="keyword">if</span> (inputChar === <span class="keyword">this</span>.input[<span class="keyword">this</span>.cursor]) &#123;</span><br><span class="line">            <span class="keyword">this</span>.cursor++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">`unexpected match <span class="subst">$&#123;inputChar&#125;</span> with <span class="subst">$&#123;<span class="keyword">this</span>.input&#125;</span> at position <span class="subst">$&#123;<span class="keyword">this</span>.cursor&#125;</span>`</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// test</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sasbds"</span>).run() === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sasbd"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"ssbds"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sasds"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sabds"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sabd"</span>).run()   === <span class="literal">true</span>);  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h3 id="7-递归下降的回溯实现"><a href="#7-递归下降的回溯实现" class="headerlink" title="7 递归下降的回溯实现"></a>7 递归下降的回溯实现</h3><p>递归下降的DFS算法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> assert = <span class="built_in">require</span>(<span class="string">'assert'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	Grammar:</span></span><br><span class="line"><span class="comment">		S-&gt;sAd</span></span><br><span class="line"><span class="comment">		A-&gt;ab|c</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">compilerEngile</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(input) &#123;</span><br><span class="line">        <span class="keyword">this</span>.input  = input;</span><br><span class="line">        <span class="keyword">this</span>.cursor = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compilerS() &#123;</span><br><span class="line">        <span class="keyword">this</span>.eat(<span class="string">'s'</span>);</span><br><span class="line">        <span class="keyword">this</span>.compilerA();</span><br><span class="line">        <span class="keyword">this</span>.eat(<span class="string">'d'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compilerA() &#123;</span><br><span class="line">        <span class="keyword">let</span> save;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (save = <span class="keyword">this</span>.saveCursor(<span class="keyword">this</span>.cursor) , <span class="keyword">this</span>.compilerA1()) ||</span><br><span class="line">            (<span class="keyword">this</span>.backtrack(save) , <span class="keyword">this</span>.compilerA2());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compilerA1() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.eat(<span class="string">'a'</span>) &amp;&amp; <span class="keyword">this</span>.eat(<span class="string">'b'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compilerA2() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.eat(<span class="string">'c'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    run() &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.compilerS(); <span class="comment">// Start !!!</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.input.length !== <span class="keyword">this</span>.cursor) &#123; <span class="comment">// deal with Extra unmatched characters</span></span><br><span class="line">                <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">`unexpected Extra unmatched characters with <span class="subst">$&#123;<span class="keyword">this</span>.input.slice(<span class="keyword">this</span>.cursor)&#125;</span>`</span> +</span><br><span class="line">                    <span class="string">`at position <span class="subst">$&#123;<span class="keyword">this</span>.cursor&#125;</span> in input string: <span class="subst">$&#123;<span class="keyword">this</span>.input&#125;</span>`</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`Error: <span class="subst">$&#123;e.message&#125;</span>`</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// help function</span></span><br><span class="line"></span><br><span class="line">    eat(inputChar) &#123;</span><br><span class="line">        <span class="keyword">if</span> (inputChar === <span class="keyword">this</span>.input[<span class="keyword">this</span>.cursor]) &#123;</span><br><span class="line">            <span class="keyword">this</span>.cursor++;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    backtrack(fn) &#123;</span><br><span class="line">        <span class="keyword">this</span>.cursor = fn();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    saveCursor(cursor) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> cursor;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// test</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sasbds"</span>).run() === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sasbd"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"ssbds"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sasds"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sabds"</span>).run()  === <span class="literal">false</span>); <span class="comment">// true</span></span><br><span class="line">assert(<span class="keyword">new</span> compilerEngile(<span class="string">"sabd"</span>).run()   === <span class="literal">true</span>);  <span class="comment">// true</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/06/parser_03/" rel="next" title="从零开始的编译原理之旅----Parser篇(三)">
+                <i class="fa fa-chevron-left"></i> 从零开始的编译原理之旅----Parser篇(三)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Jason</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-目录"><span class="nav-text">1 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-什么是递归下降？"><span class="nav-text">2 什么是递归下降？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-递归下降的预测分析（不带回溯）"><span class="nav-text">4 递归下降的预测分析（不带回溯）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-递归下降的预测分析（带回溯）"><span class="nav-text">5 递归下降的预测分析（带回溯）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-递归下降的非回溯实现"><span class="nav-text">6 递归下降的非回溯实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-递归下降的回溯实现"><span class="nav-text">7 递归下降的回溯实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访问次数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'Belyenochi',
+            repo: 'belyenochi.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '423daed40cebd35ede0f81d99ae060869da5f9ae',
+            
+                client_id: '38599803e6f0741465c4'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

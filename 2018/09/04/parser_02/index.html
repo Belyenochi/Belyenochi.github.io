@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集  曲径通幽处—-预测分析表的构建[本篇] 禅房花木深—-实现LL(1) parser 山光悦鸟性—-递归下降的两种实现 潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-parser">
+<meta name="description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建 [本篇]  禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现  潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始的编译原理之旅----Parser篇(二)">
 <meta property="og:url" content="http://www.woaitucao.xyz/2018/09/04/parser_02/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
-<meta property="og:description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集  曲径通幽处—-预测分析表的构建[本篇] 禅房花木深—-实现LL(1) parser 山光悦鸟性—-递归下降的两种实现 潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-parser">
+<meta property="og:description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建 [本篇]  禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现  潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-04T13:00:12.831Z">
+<meta property="og:updated_time" content="2018-09-06T13:49:38.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始的编译原理之旅----Parser篇(二)">
-<meta name="twitter:description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集  曲径通幽处—-预测分析表的构建[本篇] 禅房花木深—-实现LL(1) parser 山光悦鸟性—-递归下降的两种实现 潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-parser">
+<meta name="twitter:description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建 [本篇]  禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现  潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-">
 
 
 
@@ -361,10 +361,10 @@
         <h3 id="1-目录"><a href="#1-目录" class="headerlink" title="1 目录"></a>1 目录</h3><p>本系列旨在学习各种parser思路及技巧，分为以下几个部分</p>
 <ol start="0">
 <li><a href="https://belyenochi.github.io/2018/08/28/parser_00/#more" target="_blank" rel="noopener"> 清晨入古寺—-论世间parser为何物</a></li>
-<li><a href="https://belyenochi.github.io/2018/09/03/parser_01/#more" target="_blank" rel="noopener"> 初日照高林—-初探First集，Follow集</a></li>
-<li><a href="https://belyenochi.github.io/2018/09/04/parser_02/#more" target="_blank" rel="noopener"> 曲径通幽处—-预测分析表的构建<strong>[本篇]</strong></a></li>
-<li>禅房花木深—-实现LL(1) parser</li>
-<li>山光悦鸟性—-递归下降的两种实现</li>
+<li><a href="https://belyenochi.github.io/2018/09/03/parser_01/#more" target="_blank" rel="noopener"> 初日照高林—-初探First集，Follow集 </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_02/#more" target="_blank" rel="noopener"> 曲径通幽处—-预测分析表的构建 <strong>[本篇]</strong></a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more" target="_blank" rel="noopener"> 禅房花木深—-实现LL(1) parser </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more" target="_blank" rel="noopener"> 山光悦鸟性—-递归下降的两种实现 </a></li>
 <li>潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1))</li>
 <li>万籁此俱寂—-parser combinator（从ohm.js源码说起）</li>
 <li>但余钟磬音—-反思与总结</li>
@@ -535,7 +535,7 @@ F -&gt; a
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
