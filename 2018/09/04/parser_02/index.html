@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="parser," />
 
 
 
@@ -80,13 +80,14 @@
 
 
 <meta name="description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建 [本篇]  禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现  潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-">
+<meta name="keywords" content="parser">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始的编译原理之旅----Parser篇(二)">
 <meta property="og:url" content="http://www.woaitucao.xyz/2018/09/04/parser_02/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
 <meta property="og:description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建 [本篇]  禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现  潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-06T13:49:38.802Z">
+<meta property="og:updated_time" content="2018-09-16T14:49:57.949Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始的编译原理之旅----Parser篇(二)">
 <meta name="twitter:description" content="1 目录本系列旨在学习各种parser思路及技巧，分为以下几个部分   清晨入古寺—-论世间parser为何物  初日照高林—-初探First集，Follow集   曲径通幽处—-预测分析表的构建 [本篇]  禅房花木深—-实现LL(1) parser   山光悦鸟性—-递归下降的两种实现  潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1)) 万籁此俱寂—-">
@@ -301,7 +302,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jason">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -335,6 +336,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编译原理/" itemprop="url" rel="index">
+                    <span itemprop="name">编译原理</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -451,6 +474,12 @@ F -&gt; a
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/parser/" rel="tag"># parser</a>
+          
+        </div>
+      
 
       
       
@@ -544,6 +573,10 @@ F -&gt; a
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Jason" />
+            
               <p class="site-author-name" itemprop="name">Jason</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -566,7 +599,7 @@ F -&gt; a
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -577,7 +610,7 @@ F -&gt; a
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
