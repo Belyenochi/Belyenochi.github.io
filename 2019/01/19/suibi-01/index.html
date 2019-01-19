@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Jason Tomas的造轮子之旅," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,23 +79,17 @@
 
 
 
-<meta name="description" content="1 迭代器是什么在计算机编程中，迭代器是一个对象，它使程序员能够遍历容器，特别是列表。通常通过容器的接口提供各种类型的迭代器。虽然给定迭代器的接口和语义是固定的，但迭代器通常是根据容器实现的底层结构实现的，并且通常紧密耦合到容器以启用迭代器的操作语义。迭代器执行遍历并且还允许访问容器中的数据元素，但本身不执行迭代（即，并非没有采用该概念或使用术语的轻微自由）。迭代器在行为上类似于数据库游标。迭代器">
-<meta name="keywords" content="Jason Tomas的造轮子之旅">
+<meta name="description" content="实习小结0 前言仔细算一算实习也已经3个多月了，期间犯过一些很严重的错误，导致了同事们的不愉快，我深感抱歉和自责，在此我会分析自己行为的各个方面，希望以后引以为戒。 1 缺陷 对代码的理解太过自信，但是局限于个人的能力，我还是会犯一些低级错误，在对代码的语义和上下文不够了解的情况下进行了更改，解决方案：就像我的一位学长兼同事所言，遇事不决先商讨，具体到这个场景就是不确定的时候，整理出解决方案找同事">
 <meta property="og:type" content="article">
-<meta property="og:title" content="迭代器实现（零）">
-<meta property="og:url" content="http://www.woaitucao.xyz/2018/08/31/iterator-00/index.html">
+<meta property="og:title" content="suibi_01">
+<meta property="og:url" content="http://www.woaitucao.xyz/2019/01/19/suibi-01/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
-<meta property="og:description" content="1 迭代器是什么在计算机编程中，迭代器是一个对象，它使程序员能够遍历容器，特别是列表。通常通过容器的接口提供各种类型的迭代器。虽然给定迭代器的接口和语义是固定的，但迭代器通常是根据容器实现的底层结构实现的，并且通常紧密耦合到容器以启用迭代器的操作语义。迭代器执行遍历并且还允许访问容器中的数据元素，但本身不执行迭代（即，并非没有采用该概念或使用术语的轻微自由）。迭代器在行为上类似于数据库游标。迭代器">
+<meta property="og:description" content="实习小结0 前言仔细算一算实习也已经3个多月了，期间犯过一些很严重的错误，导致了同事们的不愉快，我深感抱歉和自责，在此我会分析自己行为的各个方面，希望以后引以为戒。 1 缺陷 对代码的理解太过自信，但是局限于个人的能力，我还是会犯一些低级错误，在对代码的语义和上下文不够了解的情况下进行了更改，解决方案：就像我的一位学长兼同事所言，遇事不决先商讨，具体到这个场景就是不确定的时候，整理出解决方案找同事">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/tools/iterator/树.jpg">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/tools/iterator/栈1.jpg">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/tools/iterator/栈2.jpg">
-<meta property="og:image" content="http://www.woaitucao.xyz/images/tools/iterator/callStack.jpg">
-<meta property="og:updated_time" content="2018-09-16T14:52:25.372Z">
+<meta property="og:updated_time" content="2019-01-19T06:51:50.224Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="迭代器实现（零）">
-<meta name="twitter:description" content="1 迭代器是什么在计算机编程中，迭代器是一个对象，它使程序员能够遍历容器，特别是列表。通常通过容器的接口提供各种类型的迭代器。虽然给定迭代器的接口和语义是固定的，但迭代器通常是根据容器实现的底层结构实现的，并且通常紧密耦合到容器以启用迭代器的操作语义。迭代器执行遍历并且还允许访问容器中的数据元素，但本身不执行迭代（即，并非没有采用该概念或使用术语的轻微自由）。迭代器在行为上类似于数据库游标。迭代器">
-<meta name="twitter:image" content="http://www.woaitucao.xyz/images/tools/iterator/树.jpg">
+<meta name="twitter:title" content="suibi_01">
+<meta name="twitter:description" content="实习小结0 前言仔细算一算实习也已经3个多月了，期间犯过一些很严重的错误，导致了同事们的不愉快，我深感抱歉和自责，在此我会分析自己行为的各个方面，希望以后引以为戒。 1 缺陷 对代码的理解太过自信，但是局限于个人的能力，我还是会犯一些低级错误，在对代码的语义和上下文不够了解的情况下进行了更改，解决方案：就像我的一位学长兼同事所言，遇事不决先商讨，具体到这个场景就是不确定的时候，整理出解决方案找同事">
 
 
 
@@ -125,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://www.woaitucao.xyz/2018/08/31/iterator-00/"/>
+  <link rel="canonical" href="http://www.woaitucao.xyz/2019/01/19/suibi-01/"/>
 
 
 
 
 
-  <title>迭代器实现（零） | The Tao of Jason</title>
+  <title>suibi_01 | The Tao of Jason</title>
   
 
 
@@ -302,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.woaitucao.xyz/2018/08/31/iterator-00/">
+    <link itemprop="mainEntityOfPage" href="http://www.woaitucao.xyz/2019/01/19/suibi-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jason">
@@ -319,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">迭代器实现（零）</h1>
+          <h1 class="post-title" itemprop="name headline">suibi_01</h1>
         
 
         <div class="post-meta">
@@ -331,8 +325,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T11:24:07+08:00">
-                2018-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-19T14:50:39+08:00">
+                2019-01-19
               </time>
             
 
@@ -350,8 +344,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/31/iterator-00/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/31/iterator-00/" itemprop="commentsCount"></span>
+                <a href="/2019/01/19/suibi-01/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/01/19/suibi-01/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -384,28 +378,23 @@
       
 
       
-        <h3 id="1-迭代器是什么"><a href="#1-迭代器是什么" class="headerlink" title="1 迭代器是什么"></a>1 迭代器是什么</h3><p>在计算机编程中，迭代器是一个对象，它使程序员能够遍历容器，特别是列表。通常通过容器的接口提供各种类型的迭代器。虽然给定迭代器的接口和语义是固定的，但迭代器通常是根据容器实现的底层结构实现的，并且通常紧密耦合到容器以启用迭代器的操作语义。迭代器执行遍历并且还允许访问容器中的数据元素，但本身不执行迭代（即，并非没有采用该概念或使用术语的轻微自由）。迭代器在行为上类似于数据库游标。迭代器可以追溯到1974年的CLU编程语言。</p>
-<h3 id="2-为什么会需要迭代器？"><a href="#2-为什么会需要迭代器？" class="headerlink" title="2 为什么会需要迭代器？"></a>2 为什么会需要迭代器？</h3><ol>
-<li>便于数据流的控制，假定有一个数据流，这时如果有迭代器就可以很方便的操作这个数据流，当然也可以把迭代器理解为延时求值（lazy eval）啦</li>
-<li>解耦算法和数据结构，比如你想找到树中符合条件的节点，传统的做法是使用一个查找算法，传入一个树对象和查找条件，遍历树进行匹配，而拥有迭代器之后，你只需不停的next直到迭代器末尾，大大增加了代码的可读性（毕竟是线性的）</li>
+        <h2 id="实习小结"><a href="#实习小结" class="headerlink" title="实习小结"></a>实习小结</h2><h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h3><p>仔细算一算实习也已经3个多月了，期间犯过一些很严重的错误，导致了同事们的不愉快，我深感抱歉和自责，在此我会分析自己行为的各个方面，希望以后引以为戒。</p>
+<h3 id="1-缺陷"><a href="#1-缺陷" class="headerlink" title="1 缺陷"></a>1 缺陷</h3><ol>
+<li>对代码的理解太过自信，但是局限于个人的能力，我还是会犯一些低级错误，在对代码的语义和上下文不够了解的情况下进行了更改，解决方案：就像我的一位学长兼同事所言，遇事不决先商讨，具体到这个场景就是不确定的时候，整理出解决方案找同事确认，商讨得出结论。</li>
+<li>deadline前自乱阵脚，这事的具体体现就是项目进度太过紧凑，一些代码没有经过深思熟虑就提交了，短期看起来似乎是想要为同事分忧，但是其实是给同事增加了很大的review负担以及坏了好心情（说实在的我觉得我非常的内疚），解决方案：首先认清自己的能力和经验，并且短时间不可能存在跨越式发展，虽然想获得同事的认可，但是必须慢下来保证质量，在质量的前提下提高速度，而不是作死猛肝。</li>
+<li>抗压能力过强，虽然我其实是一个自己能做的事情不喜欢麻烦别人的人，毕竟大家的时间都很宝贵，但是在工作中该沟通的地方还是必须沟通不能怕麻烦，其实这也是变相的懒惰，长远的看不利于团队协作，解决方案：该定期交流的必须定期交流，另外必须给同事和leader及时反馈，以保证不会出现过多偏误。</li>
+<li>部分能力尚且不足，比如说数据结构应用方面的不足，这里没什么好说的，该补的，该review优秀代码的肯定不能少，对数据结构合理应用以及系统设计能力是优先提高的。</li>
+<li>三思而后行，这点和2有部分重叠，体现在了我在面对危机问题和压力面前选择盲目的行动其实这是一种战略上的懒惰，解决方案：思考并做出demo（编程方面），在对问题有多个纬度（编程方面，数据结构的选择，算法的选择，设计的选择，网络环境，库的使用，可读性，健壮性，正确性等的考虑）的思考以后再下决断，并且和同事和leader商讨得出的解决方案。</li>
+<li>不够努力，对自身的精力管理做的不够好导致下班以后有时没有能够及时调整状态投入学习，解决方案：睡觉or慢跑or冥想，这三种途径可以恢复精力继续学习</li>
 </ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用迭代器前</span></span><br><span class="line">select(node, condition,result) &#123;</span><br><span class="line">	<span class="keyword">if</span> (node) &#123;</span><br><span class="line">		<span class="keyword">if</span>(node.left !== <span class="string">''</span>) &#123;</span><br><span class="line">			select(node.left);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (condition(node.value)) &#123;</span><br><span class="line">			result.push(node.value);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(node.right !== <span class="string">''</span>) &#123;</span><br><span class="line">			select(node.right);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用迭代器后,可读性增强了</span></span><br><span class="line">select(treeIterator, condition， result) &#123;</span><br><span class="line">	<span class="keyword">for</span>(treeNode <span class="keyword">of</span> treeIterator) &#123; <span class="comment">// 假定这里for of调用迭代器，事实上在JS中也确实如此</span></span><br><span class="line">		<span class="keyword">if</span>(condition(treeNode)) &#123;</span><br><span class="line">			result.push(treeNode);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>虽然线性的代码更可读，但我个人觉得递归的代码真的很美…我个人在可以递归的条件下是不会去写迭代的（除了效率限制），不过现在部分编译器支持Tail call optimization，虽然JavaScript没有，但是你可以将任何递归用黑魔法 Trampoline转化为形式上的尾递归~</p>
-<h3 id="3-实现迭代器"><a href="#3-实现迭代器" class="headerlink" title="3 实现迭代器"></a>3 实现迭代器</h3><p>迭代器的本质是延迟求值或者说部分求值（令我想到了SICP的流模型），那么由于传统的程序执行比如递归，你是无法控制程序的控制流的，拿之前的递归遍历树的例子来看，你无法在它遍历到某个子树（这时这个子树的左右节点还存在）的情况下马上回到根节点的，这是因为受限于函数的调用栈，当然你可以通过cps变换来手动控制你的代码，这是另外一回事，这里暂不予展开。既然我们不能控制函数调用栈，那我们就一不做二不休的自己创建栈来模拟之前的遍历函数运行，这样代码就在我们的掌控下了（基于栈的程序控制其实体现着栈式虚拟机的思想，通过push和pop来控制”计算”，而CPS变换更多的体现的是续算（continuation）的传递，PL的魔法啦）</p>
-<p>接下来我们可以看看，基于栈的非递归遍历实现<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基于栈的非递归查询算法的实现</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inorder_tarverse_nonrecursive</span>(<span class="params">node,condition,result</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> stack = [];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">		<span class="comment">// 压入所有左子节点</span></span><br><span class="line">		<span class="keyword">while</span> (node) &#123;</span><br><span class="line">			stack.push(node);</span><br><span class="line">			node = node.left;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// Pop出左子节点，进入右子节点或者返回父节点</span></span><br><span class="line">		<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">			<span class="keyword">let</span> top = stack.pop();</span><br><span class="line">			<span class="keyword">if</span> (condition(top)) &#123;</span><br><span class="line">				result.push(top.value);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (top.right) &#123;</span><br><span class="line">				node = top.right;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 此时根节点和根中所有左子节点已经遍历完毕</span></span><br><span class="line">			<span class="keyword">if</span> (stack.length === <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 遍历完毕所有节点</span></span><br><span class="line">		<span class="keyword">if</span> (stack.length === <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这里给出递归实现以做对比<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inorder_traverse</span>(<span class="params">node,condition,result</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (node) &#123;</span><br><span class="line">		inorder_traverse(node.left);</span><br><span class="line">		<span class="keyword">if</span> (condition(node.value)) &#123;</span><br><span class="line">			result.push(result);</span><br><span class="line">		&#125;;</span><br><span class="line">		inorder_traverse(node.right);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>递归的调用栈和非递归模拟的程序栈对比<br>树：<br><img src="/images/tools/iterator/树.jpg" alt=""></p>
-<p>非递归：<br><img src="/images/tools/iterator/栈1.jpg" alt=""><br><img src="/images/tools/iterator/栈2.jpg" alt=""></p>
-<p>递归<br><img src="/images/tools/iterator/callStack.jpg" alt=""></p>
-<font color="red">可以看出非递归模拟递归的本质就在于程序控制流的模拟，这里的控制流并不是调用栈的模拟，而是计算顺序的模拟（体现在上面的例子中就是对节点值的访问顺序），非递归模拟代码就是用栈中的节点来模拟访问的次序</font>
-
-<p>既然现在我们已经能够用栈来模拟控制流，这也意味着对程序的遍历的控制已经完全受制于我们（这里的完全受制是逻辑上的，屏蔽底层编译的细节），我们终于摆脱了了call stack :)</p>
-<p>现在我们可以肆意的操控我们的遍历程序,接下来用闭包保存栈，每次next调用pop一次来实现迭代<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeTreeIterator</span>(<span class="params">node</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">let</span> controlStack = [];</span><br><span class="line"></span><br><span class="line">	((<span class="function"><span class="keyword">function</span> <span class="title">InorderIterator</span>(<span class="params">currNode</span>) </span>&#123;</span><br><span class="line">		<span class="comment">// 将当前节点的所有左子节点入栈</span></span><br><span class="line">		<span class="keyword">while</span> (currNode) &#123;</span><br><span class="line">			controlStack.push(currNode);</span><br><span class="line">			currNode = currNode.left;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)(node))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		next: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			<span class="keyword">if</span> (controlStack.length) &#123;</span><br><span class="line">				<span class="comment">// 取出当前节点</span></span><br><span class="line">				<span class="keyword">let</span> top = controlStack.pop();</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (top.right) &#123;</span><br><span class="line">					<span class="keyword">let</span> currNode = top.right;</span><br><span class="line"></span><br><span class="line">					<span class="comment">// 将当前节点的右子节点的所有左子节点压栈</span></span><br><span class="line">					<span class="keyword">while</span> (currNode) &#123;</span><br><span class="line">						controlStack.push(currNode);</span><br><span class="line">						currNode = currNode.left;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> &#123;<span class="attr">value</span>: top.value, <span class="attr">done</span>: <span class="literal">false</span>&#125;;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> &#123;<span class="attr">done</span>: <span class="literal">true</span>&#125;;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>拉出迭代器遛遛<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> tree = &#123;</span><br><span class="line">	value: <span class="number">5</span>,</span><br><span class="line">	left: &#123;</span><br><span class="line">		value: <span class="number">4</span>,</span><br><span class="line">		left: <span class="string">''</span>,</span><br><span class="line">		right: <span class="string">''</span></span><br><span class="line">	&#125;,</span><br><span class="line">	right: &#123;</span><br><span class="line">		value: <span class="number">8</span>,</span><br><span class="line">		left: &#123;</span><br><span class="line">			value: <span class="number">6</span>,</span><br><span class="line">			left: <span class="string">''</span>,</span><br><span class="line">			right: <span class="string">''</span></span><br><span class="line">		&#125;,</span><br><span class="line">		right: <span class="string">''</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> test = makeTreeIterator(tree),result = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = test.next(); i.done !== <span class="literal">true</span>; i=test.next()) &#123;</span><br><span class="line">	<span class="keyword">if</span> (i.value &lt; <span class="number">5</span>) &#123;</span><br><span class="line">		result.push(i.value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(result); <span class="comment">// [4]</span></span><br></pre></td></tr></table></figure></p>
-<p>还有一种实现迭代器的方法就是使用continuation来实现控制反转啦~<br>下一篇博客会去讲解如何用continuation来实现迭代器，这里先用ES6的generator来预热<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">inOrder</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">let</span> x;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (node) &#123;</span><br><span class="line">		<span class="keyword">for</span> (x <span class="keyword">of</span> inOrder(node.left)) &#123;</span><br><span class="line">			<span class="keyword">yield</span> x;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">yield</span> node.value;</span><br><span class="line">		<span class="keyword">for</span> (x <span class="keyword">of</span> inOrder(node.right)) &#123;</span><br><span class="line">			<span class="keyword">yield</span> x;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> test = inOrder(tree),result = [];</span><br><span class="line"><span class="keyword">for</span>(i <span class="keyword">of</span> test) &#123;</span><br><span class="line">	<span class="keyword">if</span> (i &lt; <span class="number">5</span>) &#123;</span><br><span class="line">		result.push(i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(result); <span class="comment">// [4]</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4 小结"></a>4 小结</h3><p>基于栈可以模拟控制流，这也是栈式虚拟机的思想，堆栈处理不愧是计算机领域强劲的技术，从迭代引申到控制流，看来“取指-执行”模型不仅仅用在CPU啊。</p>
-<h3 id="5-Reference"><a href="#5-Reference" class="headerlink" title="5 Reference"></a>5 Reference</h3><p><a href="https://coolshell.cn/articles/9886.html/comment-page-1#comments" title="二叉树迭代器算法" target="_blank" rel="noopener">二叉树迭代器算法</a><br><a href="http://effbot.org/pyfaq/what-is-an-iterator.htm" title="What is an iterator?" target="_blank" rel="noopener">What is an iterator?</a><br><a href="https://stackoverflow.com/questions/49052473/folder-iterator-continuation-token-recursive-loop" title="Folder Iterator Continuation Token Recursive Loop" target="_blank" rel="noopener">Folder Iterator Continuation Token Recursive Loop</a><br><a href="http://gallium.inria.fr/blog/generators-iterators-control-and-continuations/" title="generators-iterators-control-and-continuations/" target="_blank" rel="noopener">generators-iterators-control-and-continuations/</a></p>
+<h3 id="2-需要坚持的地方"><a href="#2-需要坚持的地方" class="headerlink" title="2. 需要坚持的地方"></a>2. 需要坚持的地方</h3><ol>
+<li>以周为区间划分任务，以天为单位去落实todo list，分治任务并留下部分时间应对其他情况</li>
+<li>早睡早起（虽然在加班那段时间做的不够好），认识到自身的睡眠是保证精力来源的重要途径，将作息调整在23～7.30有意义身体机能的balance</li>
+<li>针对性的学习，在刚接触scala以及类库的那会先看理论然后找exercise去实践是一种有效的途径，当然这不适用于系统的学习，但对于工程实践性价比颇高</li>
+<li>在自身能力和时间允许的条件下帮助同事，这也可以提高团队的凝聚力以后为以后的有效沟通做铺垫</li>
+<li>理性的看待失败并总结，找出失败的本质并且避免这一类问题，多学习多实践，保持一颗纯粹的心</li>
+</ol>
+<h3 id="3-小结"><a href="#3-小结" class="headerlink" title="3. 小结"></a>3. 小结</h3><p>白驹过隙，三个月就这么过去了，在mesoor的日子里收获了很多经验和教训，也认识了很多很棒的同事，感谢扬哥，火火，小晖，法师等同事一直以来以各种形式帮助我成长，我犯下过一些愚蠢的错误，但是我会不断努力成为更优秀的工程师和团队一起奋斗！</p>
 
       
     </div>
@@ -421,12 +410,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Jason-Tomas的造轮子之旅/" rel="tag"># Jason Tomas的造轮子之旅</a>
-          
-        </div>
-      
 
       
       
@@ -436,8 +419,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/29/jsys_07-08_summary/" rel="next" title="计算的要素第七-八章小结">
-                <i class="fa fa-chevron-left"></i> 计算的要素第七-八章小结
+              <a href="/2018/12/08/suibi-00/" rel="next" title="随想——2018/12/8/22:13">
+                <i class="fa fa-chevron-left"></i> 随想——2018/12/8/22:13
               </a>
             
           </div>
@@ -445,10 +428,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/01/jsys_12_summary/" rel="prev" title="计算的要素第十二章总结">
-                计算的要素第十二章总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -618,7 +597,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-迭代器是什么"><span class="nav-text">1 迭代器是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-为什么会需要迭代器？"><span class="nav-text">2 为什么会需要迭代器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-实现迭代器"><span class="nav-text">3 实现迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-小结"><span class="nav-text">4 小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Reference"><span class="nav-text">5 Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实习小结"><span class="nav-text">实习小结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-前言"><span class="nav-text">0 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-缺陷"><span class="nav-text">1 缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-需要坚持的地方"><span class="nav-text">2. 需要坚持的地方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-小结"><span class="nav-text">3. 小结</span></a></li></ol></li></ol></div>
             
 
           </div>
