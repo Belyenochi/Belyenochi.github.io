@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="0 计算机的工作模式0.1 硬件图和计算机的逻辑图 0.2 cpu的组成 运算单元 数据单元 控制单元1 x86架构1.1 历史x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架构被">
+<meta name="description" content="0 计算机的工作模式0.1 硬件图和计算机的逻辑图 0.2 cpu的组成 运算单元 数据单元 控制单元  1 x86架构1.1 历史x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架">
 <meta name="keywords" content="os">
 <meta property="og:type" content="article">
 <meta property="og:title" content="趣谈Linux操作系统笔记02（对应06-08）">
 <meta property="og:url" content="http://www.woaitucao.xyz/2019/04/14/biji-os-02/index.html">
 <meta property="og:site_name" content="The Tao of Jason">
-<meta property="og:description" content="0 计算机的工作模式0.1 硬件图和计算机的逻辑图 0.2 cpu的组成 运算单元 数据单元 控制单元1 x86架构1.1 历史x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架构被">
+<meta property="og:description" content="0 计算机的工作模式0.1 硬件图和计算机的逻辑图 0.2 cpu的组成 运算单元 数据单元 控制单元  1 x86架构1.1 历史x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/1.png">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/2.png">
@@ -98,10 +98,10 @@
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/9.png">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/10.png">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/11.png">
-<meta property="og:updated_time" content="2019-04-14T13:24:46.177Z">
+<meta property="og:updated_time" content="2019-04-14T13:27:11.523Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="趣谈Linux操作系统笔记02（对应06-08）">
-<meta name="twitter:description" content="0 计算机的工作模式0.1 硬件图和计算机的逻辑图 0.2 cpu的组成 运算单元 数据单元 控制单元1 x86架构1.1 历史x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架构被">
+<meta name="twitter:description" content="0 计算机的工作模式0.1 硬件图和计算机的逻辑图 0.2 cpu的组成 运算单元 数据单元 控制单元  1 x86架构1.1 历史x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架">
 <meta name="twitter:image" content="http://www.woaitucao.xyz/images/biji_os_02/1.png">
 
 
@@ -385,8 +385,10 @@
 <h4 id="0-2-cpu的组成"><a href="#0-2-cpu的组成" class="headerlink" title="0.2 cpu的组成"></a>0.2 cpu的组成</h4><ol>
 <li>运算单元</li>
 <li>数据单元</li>
-<li>控制单元<br><img src="/images/biji_os_02/2.png" alt=""><h3 id="1-x86架构"><a href="#1-x86架构" class="headerlink" title="1 x86架构"></a>1 x86架构</h3><h4 id="1-1-历史"><a href="#1-1-历史" class="headerlink" title="1.1 历史"></a>1.1 历史</h4>x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。<br>该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架构被称为“x86”。由于数字并不能作为注册商标，因此Intel及其竞争者均在新一代处理器使用可注册的名称，如Pentium。现时英特尔将其称为IA-32，全名为“Intel Architecture, 32-bit”，一般情形下指代32位的架构。<h4 id="1-2-8086的原理"><a href="#1-2-8086的原理" class="headerlink" title="1.2 8086的原理"></a>1.2 8086的原理</h4>8086的cpu包含以下几个部分：</li>
+<li>控制单元<br><img src="/images/biji_os_02/2.png" alt=""></li>
 </ol>
+<h3 id="1-x86架构"><a href="#1-x86架构" class="headerlink" title="1 x86架构"></a>1 x86架构</h3><h4 id="1-1-历史"><a href="#1-1-历史" class="headerlink" title="1.1 历史"></a>1.1 历史</h4><p>x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。<br>该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架构被称为“x86”。由于数字并不能作为注册商标，因此Intel及其竞争者均在新一代处理器使用可注册的名称，如Pentium。现时英特尔将其称为IA-32，全名为“Intel Architecture, 32-bit”，一般情形下指代32位的架构。</p>
+<h4 id="1-2-8086的原理"><a href="#1-2-8086的原理" class="headerlink" title="1.2 8086的原理"></a>1.2 8086的原理</h4><p>8086的cpu包含以下几个部分：</p>
 <ul>
 <li>数据单元：AX、BX、CX、DX、SP、BP、SI、DI寄存器</li>
 <li>控制单元：IP（指令指针寄存器，指向代码段中下一条指令的位置 ）、CS（代码段寄存器（Code Segment Register），通过它可以找到代码在内存中的位置）、DS（数据段的寄存器，通过它可以找到数据在内存中的位置）、SS（栈寄存器）、ES<br><img src="/images/biji_os_02/3.png" alt=""><h4 id="1-3-课堂练习"><a href="#1-3-课堂练习" class="headerlink" title="1.3 课堂练习"></a>1.3 课堂练习</h4>Q: mov, call, ret, jmp, int, add, or, xor, shl, ahr, push, pop, inc, dec, sub, cmp指令含义？<br>A: </li>
