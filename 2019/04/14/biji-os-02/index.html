@@ -98,7 +98,7 @@
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/9.png">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/10.png">
 <meta property="og:image" content="http://www.woaitucao.xyz/images/biji_os_02/11.png">
-<meta property="og:updated_time" content="2019-04-14T13:27:11.523Z">
+<meta property="og:updated_time" content="2019-04-14T13:28:47.251Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="趣谈Linux操作系统笔记02（对应06-08）">
 <meta name="twitter:description" content="0 计算机的工作模式0.1 硬件图和计算机的逻辑图 0.2 cpu的组成 运算单元 数据单元 控制单元  1 x86架构1.1 历史x86泛指一系列由英特尔公司开发处理器的架构，这类处理器最早为1978年面市的“Intel 8086”CPU。该系列较早期的处理器名称是以数字来表示80x86。由于以“86”作为结尾，包括Intel 8086、80186、80286、80386以及80486，因此其架">
@@ -418,7 +418,7 @@
 <li>解压缩kernel.img,跳转到kernel.img开始执行</li>
 <li>grub load config解析操作系统配置文件（grub.conf），经过一系列的系统配置初始化函数，最后调用grub_command_execute启动内核</li>
 </ol>
-<font color="red">小结图</font><br><img src="/images/biji_os_02/6.png" alt=""><br><img src="/images/biji_os_02/7.png" alt=""><br><img src="/images/biji_os_02/8.png" alt=""><br><br>### 3 内核初始化<br><br>#### 3.1 内核初始化流程<br><img src="/images/biji_os_02/9.png" alt=""><br>1. 调用内核初始化函数start_kernel()<br>2. 初始化进程列表，创建0号进程，这是唯一一个没有通过 fork 或者 kernel_thread 产生的进程，是进程列表的第一个<br>3. 调用trap_init()初始化中断门<br>4. 调用mm_init()初始化内存管理模块<br>5. 调用sched_init()初始化调度模块<br>6. 调用vfs_caches_init()初始化基于内存的文件系统rootfs<br>7. 调用rest_init()来做其他方面的初始化<br><br>#### 3.2 系统调用流程<br><img src="/images/biji_os_02/10.png" alt=""><br><br>#### 3.3 rest_init()<br>- 调用kernel_thread(kernel_init, NULL, CLONE_FS)创建第1号进程（用户态所有进程的祖先）<br>- 调用kernel_thread(kernel_init, NULL, CLONE_FS|CLONE_FILES)创建2号进程（用户态所有进程的祖先）<br><br><font color="red">这里的函数 kthreadd，负责所有内核态的线程的调度和管理，是内核态所有线程运行的祖先。</font>
+<font color="red">小结图</font><br><img src="/images/biji_os_02/6.png" alt=""><br><img src="/images/biji_os_02/7.png" alt=""><br><img src="/images/biji_os_02/8.png" alt=""><br><br>### 3 内核初始化<br>#### 3.1 内核初始化流程<br><img src="/images/biji_os_02/9.png" alt=""><br>1. 调用内核初始化函数start_kernel()<br>2. 初始化进程列表，创建0号进程，这是唯一一个没有通过 fork 或者 kernel_thread 产生的进程，是进程列表的第一个<br>3. 调用trap_init()初始化中断门<br>4. 调用mm_init()初始化内存管理模块<br>5. 调用sched_init()初始化调度模块<br>6. 调用vfs_caches_init()初始化基于内存的文件系统rootfs<br>7. 调用rest_init()来做其他方面的初始化<br><br>#### 3.2 系统调用流程<br><img src="/images/biji_os_02/10.png" alt=""><br><br>#### 3.3 rest_init()<br>- 调用kernel_thread(kernel_init, NULL, CLONE_FS)创建第1号进程（用户态所有进程的祖先）<br>- 调用kernel_thread(kernel_init, NULL, CLONE_FS|CLONE_FILES)创建2号进程（用户态所有进程的祖先）<br><br><font color="red">这里的函数 kthreadd，负责所有内核态的线程的调度和管理，是内核态所有线程运行的祖先。</font>
 
 <h4 id="3-4-小结流程"><a href="#3-4-小结流程" class="headerlink" title="3.4 小结流程"></a>3.4 小结流程</h4><p><img src="/images/biji_os_02/11.png" alt=""></p>
 <h3 id="4-引用链接"><a href="#4-引用链接" class="headerlink" title="4 引用链接"></a>4 引用链接</h3><p><a href="https://zh.wikipedia.org/wiki/X86" title="x86" target="_blank" rel="noopener">x86</a><br><a href="https://www.felixcloutier.com/x86/" title="x86 and amd64 instruction reference" target="_blank" rel="noopener">x86 and amd64 instruction reference</a></p>
