@@ -3,6 +3,23 @@
   
     
     <entry>
+      <title>围绕kubernetes的设计与源码探索之旅</title>
+      <link href="/2020/04/23/kubernetes/"/>
+      <url>/2020/04/23/kubernetes/</url>
+      
+        <content type="html"><![CDATA[<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>在kubernetes相关基础设施领域工作将近一年时间了，期间对kubernetes以及相关组件乃至整个云计算的过去，当下与未来有了一定思考，趁此离职学习期间将这一年学到的东西整理一下，这次探索因为我在实际的工业界实践过程中已经有了自顶向下的实践，所以我决定这一次自底向上的去进行探索（当然隔壁的数据库实现也会慢慢更新的：），为了区别已经让我厌烦的XXX源码讲解我决定使用结合源码片段的自问自答形式（感谢little系列…感谢Friedman）。</p><h3 id="适宜人群"><a href="#适宜人群" class="headerlink" title="适宜人群"></a>适宜人群</h3><ul><li>了解kubernetes的使用以及基本概念（CRI,CNI,CSI）</li><li>有一定的kernel知识（进程，内存，IO子系统）</li><li>可以接受我有时候对具体细节实现浅尝辄止的习惯（但是一般我都会给一个更好的说明链接，因为有一些概念我自己也只是有所了解</li></ul><h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><p>（初版）</p><ol><li>kubernetes（v1.18.2）<ul><li>kubelet</li><li>kube-proxy</li><li>kube-apiserver</li><li>kube-controllermanager</li><li>kube-scheduler</li></ul></li><li>etcd（v3.4.3）</li><li>calico（v3.12）</li><li>runc（v1.0-rc10） </li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> kubernetes </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>我有一个大胆的想法之单手撸数据库(I)</title>
       <link href="/2020/03/02/alphaDB/"/>
       <url>/2020/03/02/alphaDB/</url>
