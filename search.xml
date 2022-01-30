@@ -3,17 +3,39 @@
   
     
     <entry>
-      <title>给胡せいじ的第一封信</title>
-      <link href="/2021/05/19/love/"/>
-      <url>/2021/05/19/love/</url>
+      <title></title>
+      <link href="/2021/08/31/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%A7%84%E8%8C%83/"/>
+      <url>/2021/08/31/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%A7%84%E8%8C%83/</url>
       
-        <content type="html"><![CDATA[<p><em>情不知其所起，一往而情深</em></p><p>今天是519，我在思考我有多喜欢你，以及我可能没有告诉你的一些东西，所以我想赶在520之前让你知道我是多么的喜欢你。</p><p>认识你到今天已经过去了一个多月，我仍然记得刚认识你那会你让我做网恋选择题不靠谱的样子哈哈哈，但随着后面一天天的相处，慢慢的我发现你是一个憨憨可爱的女孩子，是我可以让我鼓起勇气表白，努力克服距离，克服内心的恐惧以及自卑的女孩子，所以至少这一次，我不想错过。</p><p>你总是说要减肥hhh，不过在我心里无论你吃了多少麻辣香锅，或者是深夜夜宵，你始终是一个独立思考，善良随和，憨头憨脑对待这个世界的可爱女孩子（参考憨八龟），我想无论是一天把吃甜瓜吃完咳嗽不停，看到蟑螂蜘蛛直接挂机，白天不吃饭半夜暴饮暴食的你，还是在我下班后对我说お疲れ，在我演讲的时候替我加油的你，亦或者是在我工作的时候不停磨人的你，都是我喜欢的样子。</p><p>这应该是我这几年来最开心的两周，心里有了牵挂，感觉福报也不过如此哈哈哈，至少你一直在我的身边，和你恋爱之后我明显感觉自己更加努力了（各种意义上），我想变得更强，想早点结束这异地，想一直保护你，我也好想去你的城市，记录你那里的一草一木，甚至是小区里的便利店，如果我可以像熟悉我的城市一样熟悉你的城市，当你和我说你在做什么时，我就能生动地想象出来，就像你只是出门去了，晚上就会回来一般，就不会那么想你。<br>好想和你去北海道滑雪，再和你去看一看旭川动物园，还有好多地方想和你一块去！想要一直陪着你！想要和你见面！！！！！！！</p>]]></content>
+        <content type="html"><![CDATA[<ol><li>ne</li></ol>]]></content>
+      
+      
+      
+    </entry>
+    
+    <entry>
+      <title></title>
+      <link href="/2021/08/29/8.22/"/>
+      <url>/2021/08/29/8.22/</url>
+      
+        <content type="html"><![CDATA[<p>Dear All：</p><p>以下是我的工作周报</p><p><strong>本周工作：</strong></p><ol><li>输出中间件<a href="https://km.sankuai.com/page/1099976039" target="_blank" rel="noopener">1-5-10场景下监控指标方案</a></li><li>完成中间件平台概要设计评审</li><li>完成部分组件<a href="https://km.sankuai.com/page/1100142210" target="_blank" rel="noopener">压力测试（Zookeeper）报告</a></li><li>完成巡检模块对接新告警系统修改</li><li>完成<a href="http://dev.sankuai.com/code/repo-detail/xy/mcloud-charts/pr/30/overview" target="_blank" rel="noopener">Zookeeper、Leaf、Nacos 插件体系对接</a></li></ol><p><strong>下周工作：</strong></p><ol><li>完成Zookeeper平台化概要设计</li><li>完成中间件平台代码开发规范（包括CI集成，CR规范制定，代码开发目录结构）制定</li><li>完成Zookeeper UI设计</li><li>完成Zookeeper 部分代码开发（比如服务注册能力）</li><li>完成Nacos、Leaf、Zookeeper监控能力集成</li><li>讨论确立Octo-Portal后续的支持形式（无动态服务发现能力zk地址编译期写死，现阶段无法插件化）</li></ol><p><strong>本周感想</strong>：</p><p>中间件平台化必须吸取mke之前没有代码开发规范，没有强制CI，缺少CR规范的教训，在此之上进行协同开发。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    <entry>
+      <title>2021 目标</title>
+      <link href="/2021/08/27/2021-%E7%9B%AE%E6%A0%87/"/>
+      <url>/2021/08/27/2021-%E7%9B%AE%E6%A0%87/</url>
+      
+        <content type="html"><![CDATA[<p>虽然2021已经过去了一大半了，在这一大半的时间里我也走了不少弯路，但是我觉得亡羊补牢未为晚也，2021剩下的时间里我需要在技术上和生活上建立起目标。</p><p>技术层面</p><ol><li>完成Zookeeper Operator全生命周期</li><li>完成对Octo、Leaf、Nacos的设计源码探究</li><li>完成对istio社区的第一个有效PR</li><li>完成Terrform Controller的PR</li></ol><p>生活层面</p><ol><li>每天坚持锻炼，不吃垃圾食品不吃夜宵</li><li>见女朋友家长= =（有点紧张）</li></ol><p>工作层面</p><ol><li>建立起整个金融云中间件平台</li></ol>]]></content>
       
       
       
         <tags>
             
-            <tag> 和黑猫警长的日常 </tag>
+            <tag> 2021 </tag>
             
         </tags>
       
