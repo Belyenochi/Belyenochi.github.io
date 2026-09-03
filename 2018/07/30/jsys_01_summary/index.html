@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"belyenochi.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927)  1 OverView  以上是课程的学习，内容，让我们bottum up搭建一个计算机吧!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算的要素-第一章小结">
+<meta property="og:url" content="https://belyenochi.github.io/2018/07/30/jsys_01_summary/index.html">
+<meta property="og:site_name" content="The Tao of Jason">
+<meta property="og:description" content="Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927)  1 OverView  以上是课程的学习，内容，让我们bottum up搭建一个计算机吧!">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/ClassOverview.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/logicGate.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/implementOfGate.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/And.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/And16.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/DMux.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/DMux4Way.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/DMux8Way.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/Mux.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/Mux4Way16.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/Not.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/Or.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_01/Xor.png">
+<meta property="article:published_time" content="2018-07-30T05:35:12.000Z">
+<meta property="article:modified_time" content="2026-09-03T07:38:43.012Z">
+<meta property="article:author" content="Jason">
+<meta property="article:tag" content="Nand2tetris">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://belyenochi.github.io/images/jsys_01/ClassOverview.jpg">
+
+
+<link rel="canonical" href="https://belyenochi.github.io/2018/07/30/jsys_01_summary/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://belyenochi.github.io/2018/07/30/jsys_01_summary/","path":"2018/07/30/jsys_01_summary/","title":"计算的要素-第一章小结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算的要素-第一章小结 | The Tao of Jason</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">The Tao of Jason</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-OverView"><span class="nav-number">1.</span> <span class="nav-text">1 OverView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E9%80%BB%E8%BE%91%E9%97%A8%EF%BC%88logic-Gate%EF%BC%89%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2 什么是逻辑门（logic Gate）？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E9%80%BB%E8%BE%91%E9%97%A8"><span class="nav-number">3.</span> <span class="nav-text">3 如何使用逻辑门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E9%80%BB%E8%BE%91%E9%97%A8"><span class="nav-number">4.</span> <span class="nav-text">4 为什么使用逻辑门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%90%84%E7%A7%8D%E9%80%BB%E8%BE%91%E9%97%A8%EF%BC%88project%E4%B8%AD%E7%9A%84%E5%9B%BE%E7%A4%BA%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">5 各种逻辑门（project中的图示）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Belyenochi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Belyenochi" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:491537461q@gmail.com" title="E-Mail → mailto:491537461q@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/JasonTomas13" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;JasonTomas13" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/luo-yu-31-80/activities" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;luo-yu-31-80&#x2F;activities" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://belyenochi.github.io/2018/07/30/jsys_01_summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算的要素-第一章小结 | The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算的要素-第一章小结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-30 13:35:12" itemprop="dateCreated datePublished" datetime="2018-07-30T13:35:12+08:00">2018-07-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">计算机体系结构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><em>Such simple things,And we make of them something so complex it defeats us ,Almost. —-John Ashbery(1927)</em></p>
+<h3 id="1-OverView"><a href="#1-OverView" class="headerlink" title="1 OverView"></a>1 OverView</h3><p><img src="/images/jsys_01/ClassOverview.jpg"><br>以上是课程的学习，内容，让我们bottum up搭建一个计算机吧!</p>
+<h3 id="2-什么是逻辑门（logic-Gate）？"><a href="#2-什么是逻辑门（logic-Gate）？" class="headerlink" title="2 什么是逻辑门（logic Gate）？"></a>2 什么是逻辑门（logic Gate）？</h3><p>在谈论什么是逻辑门之前，我们得先谈谈布尔代数，因为计算机硬件基于二进制数据的表示和处理，所以布尔代数成了计算机中事实上不可或缺的理论根基。<br>学过离散数学的朋友肯定对真值表不陌生，事实上逻辑门就是由布尔函数的物理具象化，输入和输出就是真值表的变量，如果布尔函数f有n个输入变量，返回m个二进制的结果，那么用来实现这个函数f的门将会有n个输入管脚（input pins）和m个输出管脚（ouput pins） 。当我们把一些值从输入管脚输入，它的内部结构即逻辑门<br>会计算然后输出对应的结果值。<br><img src="/images/jsys_01/logicGate.jpg"></p>
+<h3 id="3-如何使用逻辑门"><a href="#3-如何使用逻辑门" class="headerlink" title="3 如何使用逻辑门"></a>3 如何使用逻辑门</h3><p><img src="/images/jsys_01/implementOfGate.jpg"><br>对于任何给定的逻辑门，我们都能够从外部和内部两个不同方面进行观察，图1.4中右边的图给出了门的内部结构（或称为内部实现），而左边部分仅仅显示了门的外部接口（interface），也就是输入和输出管脚。内部结构仅仅与门电路的设计者相关，而外部结构则是其他设计者所关心的（也就是外部结构也就是我们常常使用的黑盒抽象，只关心输入输出），他们仅仅使用门电路的抽象而不去关心其内部结构。<br>下面总结两点关于逻辑设计的要素：</p>
+<ol>
+<li>虽然逻辑设计（门电路设计者）的基本功能可以通过不同的的方式实现其外部接口，但从效率的角度上来说， <strong>基本原则</strong> 是用尽可能少的门来显示尽可能多的功能。</li>
+<li>给定门的描述（外部接口），通过应用已经实现的门，找到有效的方法来实现它。 <strong>因为本课程后续部分采用了HDL语言，所以这里简单的解释HDL语言：</strong> chips(芯片)的HDL定义包括header部分和parts部分。 Header部分描述了芯片的接口(interface)，也就是芯片的名称、输入和输出管脚。 Pars部分描述了所有底层电路的名称和拓扑结构，这些电路是构成该芯片的基本部分，每个部分用一个statement(语句)来表示，它描述了该部分的名称与其他部分的连接方式。 为了简单明了的编写这些语句，HDL程序员必须有内在模块的接口文档，体现在project中就是注释了。 形如part’s pin name &#x3D; chip’s pin name的含义是将芯片内部的管脚与外部管教相连，如此实现了芯片的输入输出。 更多关于HDL程序设计的内容可以参考《计算的要素》附录部分。</li>
+</ol>
+<h3 id="4-为什么使用逻辑门"><a href="#4-为什么使用逻辑门" class="headerlink" title="4 为什么使用逻辑门"></a>4 为什么使用逻辑门</h3><p>之前曾谈到计算机的计算模型采用了布尔代数，从图灵机的纸带存储符号,到冯诺依曼体系结构的memory都采用了0,1作为数据的表示形式，其根本是高效和简单（当然lambda calculus不是这么做的，你可以自己定义数字如church numerals，函数等，因为是抽象模型所以理解和运算起来没有0，1在实际应用中直接，但事实上无论是TM,lambda calculus，冯诺依曼体系结构都是等价的，可以说前两者是等价的计算模型，后者是物理实现模型，本质都是对计算的建模且等价！）</p>
+<h3 id="5-各种逻辑门（project中的图示）"><a href="#5-各种逻辑门（project中的图示）" class="headerlink" title="5 各种逻辑门（project中的图示）"></a>5 各种逻辑门（project中的图示）</h3><p>项目地址<a target="_blank" rel="noopener" href="https://github.com/Belyenochi/nand2tetris">https://github.com/Belyenochi/nand2tetris</a></p>
+<ol>
+<li>And <img src="/images/jsys_01/And.png"></li>
+<li>And16 <img src="/images/jsys_01/And16.png"></li>
+<li>Dmux <img src="/images/jsys_01/DMux.png"></li>
+<li>DMux4Way <img src="/images/jsys_01/DMux4Way.png"></li>
+<li>DMux8Way <img src="/images/jsys_01/DMux8Way.png"></li>
+<li>Mux <img src="/images/jsys_01/Mux.png"></li>
+<li>Mux4Way16 <img src="/images/jsys_01/Mux4Way16.png"></li>
+<li>Not <img src="/images/jsys_01/Not.png"></li>
+<li>Or <img src="/images/jsys_01/Or.png"></li>
+<li>Xor <img src="/images/jsys_01/Xor.png"></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Nand2tetris/" rel="tag"># Nand2tetris</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/31/jsys_02_summary/" rel="next" title="计算的要素-第二章小结">
+                  计算的要素-第二章小结 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jason</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

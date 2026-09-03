@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"belyenochi.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本篇将使用非递归的预测分析来构建LL(1) Parser，下面就让我们开始吧:-)  1 目录 本系列旨在学习各种parser思路及技巧，分为以下几个部分   1.  清晨入古寺—-论世间parser为何物  2.  初日照高林—-初探First集，Follow集   3.  曲径通幽处—-预测分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始的编译原理之旅----Parser篇(三)">
+<meta property="og:url" content="https://belyenochi.github.io/2018/09/06/parser_03/index.html">
+<meta property="og:site_name" content="The Tao of Jason">
+<meta property="og:description" content="本篇将使用非递归的预测分析来构建LL(1) Parser，下面就让我们开始吧:-)  1 目录 本系列旨在学习各种parser思路及技巧，分为以下几个部分   1.  清晨入古寺—-论世间parser为何物  2.  初日照高林—-初探First集，Follow集   3.  曲径通幽处—-预测分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-06T10:41:10.000Z">
+<meta property="article:modified_time" content="2026-09-03T07:38:43.013Z">
+<meta property="article:author" content="Jason">
+<meta property="article:tag" content="parser">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://belyenochi.github.io/2018/09/06/parser_03/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://belyenochi.github.io/2018/09/06/parser_03/","path":"2018/09/06/parser_03/","title":"从零开始的编译原理之旅----Parser篇(三)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从零开始的编译原理之旅----Parser篇(三) | The Tao of Jason</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">The Tao of Jason</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">1 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%9D%9E%E9%80%92%E5%BD%92%E7%9A%84%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">2 非递归的预测分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%9D%9E%E9%80%92%E5%BD%92%E7%9A%84%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">3 非递归的预测分析实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Reference"><span class="nav-number">4.</span> <span class="nav-text">4 Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Belyenochi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Belyenochi" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:491537461q@gmail.com" title="E-Mail → mailto:491537461q@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/JasonTomas13" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;JasonTomas13" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/luo-yu-31-80/activities" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;luo-yu-31-80&#x2F;activities" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://belyenochi.github.io/2018/09/06/parser_03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从零开始的编译原理之旅----Parser篇(三) | The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从零开始的编译原理之旅----Parser篇(三)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-06 18:41:10" itemprop="dateCreated datePublished" datetime="2018-09-06T18:41:10+08:00">2018-09-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">编译原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本篇将使用非递归的预测分析来构建LL(1) Parser，下面就让我们开始吧:-)</p>
+<h3 id="1-目录"><a href="#1-目录" class="headerlink" title="1 目录"></a>1 目录</h3><p>本系列旨在学习各种parser思路及技巧，分为以下几个部分</p>
+<ol>
+<li><a href="https://belyenochi.github.io/2018/08/28/parser_00/#more"> 清晨入古寺—-论世间parser为何物</a></li>
+<li><a href="https://belyenochi.github.io/2018/09/03/parser_01/#more"> 初日照高林—-初探First集，Follow集 </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_02/#more"> 曲径通幽处—-预测分析表的构建 </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more"> 禅房花木深—-实现LL(1) parser <strong>[本篇]</strong></a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more"> 山光悦鸟性—-递归下降的两种实现 </a></li>
+<li>潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1))</li>
+<li>万籁此俱寂—-parser combinator（从ohm.js源码说起）</li>
+<li>但余钟磬音—-反思与总结</li>
+</ol>
+<h3 id="2-非递归的预测分析"><a href="#2-非递归的预测分析" class="headerlink" title="2 非递归的预测分析"></a>2 非递归的预测分析</h3><p>所谓的非递归预测分析就是使用之前构建的parsing table+stack来解析input buffer。<br>算法可以描述如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">stack=[<span class="string">&#x27;S&#x27;</span>,<span class="string">&#x27;$&#x27;</span>]; <span class="comment">// S代表Start，表示起始符号，$表示栈为空</span></span><br><span class="line">cursor=第一个输入符号；</span><br><span class="line">top=栈顶符号；</span><br><span class="line"><span class="keyword">while</span>（top != $） &#123; <span class="comment">// $ 表示空的含义</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="title function_">isTerminal</span>(top)) &#123;</span><br><span class="line">		<span class="keyword">if</span> (top === input[cursor]) &#123;</span><br><span class="line">		stack.<span class="title function_">pop</span>();</span><br><span class="line">		cursor++;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">SyntaxError</span>(<span class="string">`can&#x27;t match <span class="subst">$&#123;input[cursor]&#125;</span> with <span class="subst">$&#123;top&#125;</span>`</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (!getProduction) &#123; <span class="comment">// 预测表不存在对应的产生式</span></span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;parsing table don&#x27;t match $&#123;top&#125; item&quot;</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123; <span class="comment">// 找到了预测表对应的产生式</span></span><br><span class="line">			stack.<span class="title function_">pop</span>();</span><br><span class="line">			production字符依次压栈;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	更新top指向新的栈顶;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-非递归的预测分析实现"><a href="#3-非递归的预测分析实现" class="headerlink" title="3 非递归的预测分析实现"></a>3 非递归的预测分析实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * = LL parser =</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * by Dmitry Soshnikov &lt;dmitry.soshnikov<span class="doctag">@gmail</span>.com&gt;</span></span><br><span class="line"><span class="comment"> * MIT Style license</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Often one can see manually written LL parsers implemented as</span></span><br><span class="line"><span class="comment"> * recursive descent. Approach in this diff is a classical parse table</span></span><br><span class="line"><span class="comment"> * state machine.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  LL parser consists of:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 1. input buffer (source code)</span></span><br><span class="line"><span class="comment"> * 2. stack</span></span><br><span class="line"><span class="comment"> * 3. parsing table (state machine)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Parsing table:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *   Table is used to get the next production number to apply, based on current</span></span><br><span class="line"><span class="comment"> *   symbol from the buffer, and the symbol (terminal or non-terminal)</span></span><br><span class="line"><span class="comment"> *   on top of the stack.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *   - Rows in the table are non-terminals</span></span><br><span class="line"><span class="comment"> *   - Columns are terminals</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Parsing algorithm:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *   - if the top of the stack is *terminal*, and matches current symbol in</span></span><br><span class="line"><span class="comment"> *     buffer, then just discard it from the stack, and move cursor further.</span></span><br><span class="line"><span class="comment"> *     (if doesn&#x27;t match -- parse error).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *   - Else (it must be a non-terminal), replace it with an</span></span><br><span class="line"><span class="comment"> *     alternative production, corresponding to the production number.</span></span><br><span class="line"><span class="comment"> *     (if no production -- parse error).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * $ - is a special symbol used to mark bottom of the stack</span></span><br><span class="line"><span class="comment"> *     and end of the buffer.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * S - is a start symbol.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * At the beginning stack is:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * [S, $]</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Example:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Grammar:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *   1. S -&gt; F</span></span><br><span class="line"><span class="comment"> *   2. S -&gt; (S + F)</span></span><br><span class="line"><span class="comment"> *   3. F -&gt; a</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Input:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *   (a + a)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Parse table:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *   +------------------+</span></span><br><span class="line"><span class="comment"> *   |    (  )  a  +  $ |</span></span><br><span class="line"><span class="comment"> *   +------------------+</span></span><br><span class="line"><span class="comment"> *   | S  2  -  1  -  - |</span></span><br><span class="line"><span class="comment"> *   | F  -  -  3  -  - |</span></span><br><span class="line"><span class="comment"> *   +------------------+</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The production rules which are applied to parse `(a + a)` are: 2, 1, 3, 3:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * S -&gt; ( S + F ) -&gt; ( F + F ) -&gt; ( a + F ) -&gt; ( a + a )</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * We see that each time the *left most* non-terminal is replaced. Hence, the</span></span><br><span class="line"><span class="comment"> * name of the parser: LL - scan source from Left to right, and apply the</span></span><br><span class="line"><span class="comment"> * Left most derivation.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Our grammar representation. Key is a production number from</span></span><br><span class="line"><span class="comment"> * the grammar, the value is: 0 - LHS, 1 - RHS of the production.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> grammar = &#123;</span><br><span class="line">    <span class="number">1</span>: [<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;F&#x27;</span>],       <span class="comment">// 1. S -&gt; F</span></span><br><span class="line">    <span class="number">2</span>: [<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;(S + F)&#x27;</span>], <span class="comment">// 2. S -&gt; (S + F)</span></span><br><span class="line">    <span class="number">3</span>: [<span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;a&#x27;</span>],       <span class="comment">// 3. F -&gt; a</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Initial stack: bottom is the &quot;end of the stack&quot; ($),</span></span><br><span class="line"><span class="comment"> * and the start symbol (&#x27;S&#x27; in our case) is there too.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> stack = [<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;$&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">parse</span>(<span class="params">source</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">parseFromTable</span>(source, <span class="title function_">buildTable</span>(grammar, source));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printGrammar</span>(<span class="params">grammar</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Grammar:\n&#x27;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> k <span class="keyword">in</span> grammar) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;  &#x27;</span> + k + <span class="string">&#x27;.&#x27;</span>, grammar[k][<span class="number">0</span>], <span class="string">&#x27;-&gt;&#x27;</span>, grammar[k][<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Builds a state-machine table where table[non-terminal][terminal]</span></span><br><span class="line"><span class="comment"> * coordinates determine which next production rule to apply.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">buildTable</span>(<span class="params">grammar, source</span>) &#123;</span><br><span class="line">    <span class="comment">// For now we assume a correct table was already built from</span></span><br><span class="line">    <span class="comment">// the grammar and source for us. We&#x27;ll cover how to build it</span></span><br><span class="line">    <span class="comment">// automatically in the next lessons (see &quot;first&quot; and &quot;follow&quot;</span></span><br><span class="line">    <span class="comment">// sets topic). We encode only valid rules here and skip all other</span></span><br><span class="line">    <span class="comment">// (they return `undefined` meaning a parse error).</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// +------------------+</span></span><br><span class="line">    <span class="comment">// |    (  )  a  +  $ |</span></span><br><span class="line">    <span class="comment">// +------------------+</span></span><br><span class="line">    <span class="comment">// | S  2  -  1  -  - |</span></span><br><span class="line">    <span class="comment">// | F  -  -  3  -  - |</span></span><br><span class="line">    <span class="comment">// +------------------+</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&#x27;S&#x27;</span>: &#123;<span class="string">&#x27;(&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>&#125;,</span><br><span class="line">        <span class="string">&#x27;F&#x27;</span>: &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">3</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> productionNumbers = [];</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Parses a source using parse table.</span></span><br><span class="line"><span class="comment"> * Doesn&#x27;t build a parse tree yet, but just checks a source</span></span><br><span class="line"><span class="comment"> * string for acceptance (prints production rules appled in case</span></span><br><span class="line"><span class="comment"> * of successful parse, or throws on parse errors).</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">parseFromTable</span>(<span class="params">source, table</span>) &#123;</span><br><span class="line">    <span class="title function_">printGrammar</span>(grammar);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Source:&#x27;</span>, source);</span><br><span class="line">    source = source.<span class="title function_">replace</span>(<span class="regexp">/\s+/g</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> cursor = <span class="number">0</span>; cursor &lt; source.<span class="property">length</span>;) &#123;</span><br><span class="line">        <span class="keyword">var</span> current = source[cursor];</span><br><span class="line">        <span class="keyword">var</span> top = stack.<span class="title function_">shift</span>();</span><br><span class="line">        <span class="comment">// Terminal is on the stack, just advance.</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_">isTerminal</span>(top, table) &amp;&amp; top === current) &#123;</span><br><span class="line">            <span class="comment">// We already shifted the symbol from the stack,</span></span><br><span class="line">            <span class="comment">// so just advance the cursor.</span></span><br><span class="line">            cursor++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Else, it&#x27;s a non-terminal, do derivation (replace it</span></span><br><span class="line">        <span class="comment">// in the stack with corresponding production).</span></span><br><span class="line">        stack.<span class="property">unshift</span>.<span class="title function_">apply</span>(stack, <span class="title function_">getProduction</span>(table, top, current));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Accepted. Productions:&#x27;</span>, productionNumbers.<span class="title function_">join</span>(<span class="string">&#x27;, &#x27;</span>), <span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isTerminal</span>(<span class="params">symbol, table</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> !table.<span class="title function_">hasOwnProperty</span>(symbol);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getProduction</span>(<span class="params">table, top, current</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> nextProductionNumber = table[top][current];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!nextProductionNumber) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="title class_">Error</span>(<span class="string">&#x27;Parse error, unexpected token: &#x27;</span> + current);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> nextProduction = grammar[nextProductionNumber];</span><br><span class="line"></span><br><span class="line">    productionNumbers.<span class="title function_">push</span>(nextProductionNumber);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Return an array of symbols from a production, e.g.</span></span><br><span class="line">    <span class="comment">// &#x27;(&#x27;, &#x27;S&#x27;, &#x27;+&#x27;, &#x27;F&#x27;, &#x27;)&#x27; for &#x27;(S + F)&#x27;, since</span></span><br><span class="line">    <span class="comment">// each symbol should be pushed onto the stack.</span></span><br><span class="line">    <span class="keyword">return</span> nextProduction[<span class="number">1</span>].<span class="title function_">split</span>(<span class="regexp">/\s*/</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Test:</span></span><br><span class="line"><span class="title function_">parse</span>(<span class="string">&#x27;(a + a)&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Grammar:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//   1. S -&gt; F</span></span><br><span class="line"><span class="comment">//   2. S -&gt; (S + F)</span></span><br><span class="line"><span class="comment">//   3. F -&gt; a</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source: (a + a)</span></span><br><span class="line"><span class="comment">// Accepted. Productions: 2, 1, 3, 3</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到表驱动的LL(1)Parser generator就完成了，后文讲解ohm.js还可以看到递归下降的parser generator，不过下文递归下降的两种实现都是手写递归下降的parser.</p>
+<h3 id="4-Reference"><a href="#4-Reference" class="headerlink" title="4 Reference"></a>4 Reference</h3><p><a target="_blank" rel="noopener" href="https://gist.github.com/DmitrySoshnikov/29f7a9425cdab69ea68f">DmitrySoshnikov gist</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/parser/" rel="tag"># parser</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/04/parser_02/" rel="prev" title="从零开始的编译原理之旅----Parser篇(二)">
+                  <i class="fa fa-angle-left"></i> 从零开始的编译原理之旅----Parser篇(二)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/06/parser_04/" rel="next" title="从零开始的编译原理之旅----Parser篇(四)">
+                  从零开始的编译原理之旅----Parser篇(四) <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jason</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

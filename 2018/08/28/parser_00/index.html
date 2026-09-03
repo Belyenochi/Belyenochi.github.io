@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"belyenochi.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="0 序言 自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。  本系列文章阅读前置条件   * 熟悉常见的Gra">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始的编译原理之旅----Parser篇(零)">
+<meta property="og:url" content="https://belyenochi.github.io/2018/08/28/parser_00/index.html">
+<meta property="og:site_name" content="The Tao of Jason">
+<meta property="og:description" content="0 序言 自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。  本系列文章阅读前置条件   * 熟悉常见的Gra">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://belyenochi.github.io/images/parser_00/example.jpg">
+<meta property="article:published_time" content="2018-08-28T02:52:42.000Z">
+<meta property="article:modified_time" content="2026-09-03T07:38:43.012Z">
+<meta property="article:author" content="Jason">
+<meta property="article:tag" content="parser">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://belyenochi.github.io/images/parser_00/example.jpg">
+
+
+<link rel="canonical" href="https://belyenochi.github.io/2018/08/28/parser_00/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://belyenochi.github.io/2018/08/28/parser_00/","path":"2018/08/28/parser_00/","title":"从零开始的编译原理之旅----Parser篇(零)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从零开始的编译原理之旅----Parser篇(零) | The Tao of Jason</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">The Tao of Jason</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-%E5%BA%8F%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0 序言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">1 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AE%BA%E4%B8%96%E9%97%B4parser%E4%B8%BA%E4%BD%95%E7%89%A9"><span class="nav-number">3.</span> <span class="nav-text">2 论世间parser为何物</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81parser"><span class="nav-number">4.</span> <span class="nav-text">3 为什么需要parser</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8parser"><span class="nav-number">5.</span> <span class="nav-text">4 如何使用parser</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-parser%E5%9B%BE%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">5 parser图解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Reference"><span class="nav-number">7.</span> <span class="nav-text">6 Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Belyenochi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Belyenochi" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:491537461q@gmail.com" title="E-Mail → mailto:491537461q@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/JasonTomas13" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;JasonTomas13" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/luo-yu-31-80/activities" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;luo-yu-31-80&#x2F;activities" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://belyenochi.github.io/2018/08/28/parser_00/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从零开始的编译原理之旅----Parser篇(零) | The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从零开始的编译原理之旅----Parser篇(零)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-28 10:52:42" itemprop="dateCreated datePublished" datetime="2018-08-28T10:52:42+08:00">2018-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">编译原理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="0-序言"><a href="#0-序言" class="headerlink" title="0 序言"></a>0 序言</h3><p>自从去年学了编译原理已经过去快一年了，之前的编译知识体系的构建太松散，所以我准备重新梳理一遍编译的知识脉络，但我的能力毕竟有限，非常希望有能力的读者能指正我文章中的一些不足之处，编程之道，编译之路也才刚刚起步，能力有限之处也请大家多包涵。</p>
+<p>本系列文章阅读前置条件</p>
+<ul>
+<li>熟悉常见的Grammar定义（Reference里有bnf、ebnf的grammar guide，不熟悉的朋友可以去看看）</li>
+</ul>
+<h3 id="1-目录"><a href="#1-目录" class="headerlink" title="1 目录"></a>1 目录</h3><p>本系列旨在学习各种parser思路及技巧，分为以下几个部分</p>
+<ol>
+<li><a href="https://belyenochi.github.io/2018/08/28/parser_00/#more"> 清晨入古寺—-论世间parser为何物<strong>[本篇]</strong></a></li>
+<li><a href="https://belyenochi.github.io/2018/09/03/parser_01/#more"> 初日照高林—-初探First集，Follow集 </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_02/#more"> 曲径通幽处—-预测分析表的构建 </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more"> 禅房花木深—-实现LL(1) parser </a></li>
+<li><a href="https://belyenochi.github.io/2018/09/04/parser_06/#more"> 山光悦鸟性—-递归下降的两种实现 </a></li>
+<li>潭影空人心—-浅谈recursive ascent parser(SLR,LALR(1))</li>
+<li>万籁此俱寂—-parser combinator（从ohm.js源码说起）</li>
+<li>但余钟磬音—-反思与总结</li>
+</ol>
+<h3 id="2-论世间parser为何物"><a href="#2-论世间parser为何物" class="headerlink" title="2 论世间parser为何物"></a>2 论世间parser为何物</h3><p>以下为王垠前辈原文的科普，Reference会提及建议大家读一读，说起来自己入了PL的坑还是看垠神的博客开始的。</p>
+<p>首先来科普一下。所谓parser，一般是指把某种格式的文本（字符串）转换成某种数据结构的过程。最常见的parser，是把程序文本转换成编译器内部的一种叫做“抽象语法树”（AST）的数据结构。也有简单一些的parser，用于处理CSV，JSON，XML之类的格式。</p>
+<p>举个例子，一个处理算数表达式的parser，可以把“1+2”这样的，含有1，+，2三个字符的字符串，转换成一个对象（object）。这个对象就像new BinaryExpression(ADD, new Number(1), new Number(2))这样的Java构造函数调用生成出来的那样。</p>
+<p>之所以需要做这种从字符串到数据结构的转换，是因为编译器是无法直接操作“1+2”这样的字符串的。实际上，代码的本质根本就不是字符串，它本来就是一个具有复杂拓扑的数据结构，就像电路一样。“1+2”这个字符串只是对这种数据结构的一种“编码”，就像ZIP或者JPEG只是对它们压缩的数据的编码一样。</p>
+<p>这种编码可以方便你把代码存到磁盘上，方便你用文本编辑器来修改它们，然而你必须知道，文本并不是代码本身。所以从磁盘读取了文本之后，你必须先“解码”，才能方便地操作代码的数据结构。比如，如果上面的Java代码生成的AST节点叫node，你就可以用node.operator来访问ADD，用node.left来访问1，node.right来访问2。这是很方便的。</p>
+<p>对于程序语言，这种解码的动作就叫做parsing，用于解码的那段代码就叫做parser。</p>
+<h3 id="3-为什么需要parser"><a href="#3-为什么需要parser" class="headerlink" title="3 为什么需要parser"></a>3 为什么需要parser</h3><p>正如上文中王垠说的，程序的运行其实是在不同的数据结构之间做转换，写过Web application的同学肯定对JSON，XML这类数据格式很熟悉，那么传输过程中经常涉及到将系统中的某种数据结构parser到某种传输格式上，包括很多时候从I&#x2F;O中提取数据也是个parser的过程，只不过这些parser确实比较简单，但确实是日常生活工作中不可或缺的部分，而在编译过程中其实parser就体现了将程序从高人类可读性（比如字符串）转换成高机器可读性（AST）（这里的高机器可读和VMtranslator，汇编器，指令集没有直接关系，只是为了描述高度结构化的AST可以使代码生成更加容易，也就是编译过程友好），而没有parser就意味着手写AST这个过程对于大部分人来说并不是那么直观，不过这确实对于Lisp家族程序员是一件非常美妙的事情，S-Expression万岁&#126;</p>
+<h3 id="4-如何使用parser"><a href="#4-如何使用parser" class="headerlink" title="4 如何使用parser"></a>4 如何使用parser</h3><ol>
+<li>定义好一组文法（CFG等）</li>
+<li>构建好预测表并选择对应能够解析该文法的算法（LL(1)等） 【可选】 （可以使用yacc，Bison等解析）</li>
+<li>将输入数据读入paser 【可选】 （可以手写tokenizer，也可以使用Lex生成）</li>
+</ol>
+<p>此时得到了另一种数据结构，在编译中往往是结构化的AST，当然也可以是XML或者JSON,接下来就是应用这种数据结构的事了。</p>
+<h3 id="5-parser图解"><a href="#5-parser图解" class="headerlink" title="5 parser图解"></a>5 parser图解</h3><p>由ohm.js生成的AST结构，将1+2*3映射到AST，便于大家感性理解<br><img src="/images/parser_00/example.jpg"></p>
+<h3 id="6-Reference"><a href="#6-Reference" class="headerlink" title="6 Reference"></a>6 Reference</h3><p><a target="_blank" rel="noopener" href="https://github.com/harc/ohm">ohm.js</a><br><a target="_blank" rel="noopener" href="https://www.quora.com/What-exactly-does-parsing-mean-in-programming">What-exactly-does-parsing-mean-in-programming</a><br><a target="_blank" rel="noopener" href="http://www.yinwang.org/blog-cn/2015/09/19/parser">王垠前辈—-对parser的误解</a><br><a target="_blank" rel="noopener" href="http://matt.might.net/articles/grammars-bnf-ebnf/">Grammar</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/parser/" rel="tag"># parser</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/27/regex-engine-00/" rel="prev" title="从零开始的正则引擎之旅(零)">
+                  <i class="fa fa-angle-left"></i> 从零开始的正则引擎之旅(零)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/29/jsys_07-08_summary/" rel="next" title="计算的要素第七-八章小结">
+                  计算的要素第七-八章小结 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jason</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

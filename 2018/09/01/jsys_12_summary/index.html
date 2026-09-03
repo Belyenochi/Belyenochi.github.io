@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"belyenochi.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本章是针对Hack OS各个模块的概述及其实现，其中某几个模块实现的算法很有意思，让我们马上开始吧~  1 什么是OS（以Hack OS为例）  1. 以一种对软件友好的方式封装了不同的硬件服务  2. 用不同的函数和抽象数据类型扩展了高级语言。在这个意义上的操作系统与语言的标准程序库的分界线就不那">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算的要素第十二章总结">
+<meta property="og:url" content="https://belyenochi.github.io/2018/09/01/jsys_12_summary/index.html">
+<meta property="og:site_name" content="The Tao of Jason">
+<meta property="og:description" content="本章是针对Hack OS各个模块的概述及其实现，其中某几个模块实现的算法很有意思，让我们马上开始吧~  1 什么是OS（以Hack OS为例）  1. 以一种对软件友好的方式封装了不同的硬件服务  2. 用不同的函数和抽象数据类型扩展了高级语言。在这个意义上的操作系统与语言的标准程序库的分界线就不那">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/%E4%B9%98%E6%B3%95.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/%E9%99%A4%E6%B3%95.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/%E4%BA%8C%E5%8F%89%E6%A0%91.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/malloc.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/delloc.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/sanjiao.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/sanjiaoxing.png">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/circle.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/keyboard.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/readchar.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/readLine.jpg">
+<meta property="article:published_time" content="2018-09-01T15:05:16.000Z">
+<meta property="article:modified_time" content="2026-09-03T07:38:43.012Z">
+<meta property="article:author" content="Jason">
+<meta property="article:tag" content="Nand2tetris">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://belyenochi.github.io/images/jsys_12/%E4%B9%98%E6%B3%95.jpg">
+
+
+<link rel="canonical" href="https://belyenochi.github.io/2018/09/01/jsys_12_summary/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://belyenochi.github.io/2018/09/01/jsys_12_summary/","path":"2018/09/01/jsys_12_summary/","title":"计算的要素第十二章总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算的要素第十二章总结 | The Tao of Jason</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">The Tao of Jason</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFOS%EF%BC%88%E4%BB%A5Hack-OS%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">1 什么是OS（以Hack OS为例）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81OS"><span class="nav-number">2.</span> <span class="nav-text">2 为什么我们需要OS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%95%B0%E5%AD%A6%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">3 数学操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E4%B9%98%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 乘法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E9%99%A4%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 除法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E5%B9%B3%E6%96%B9%E6%A0%B9"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 平方根</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">4 内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E8%83%8C%E6%99%AF"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AE%97%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 内存管理算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-1-alloc"><span class="nav-number">4.2.1.</span> <span class="nav-text">4.2.1 alloc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-2-deAlloc"><span class="nav-number">4.2.2.</span> <span class="nav-text">4.2.2 deAlloc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-defragmentation%EF%BC%88%E7%A2%8E%E7%89%87%E5%90%88%E5%B9%B6%EF%BC%89"><span class="nav-number">4.2.3.</span> <span class="nav-text">4.2.3 defragmentation（碎片合并）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">5 输入输出管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-%E8%BE%93%E5%87%BA"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 输出</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-1-%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2"><span class="nav-number">5.1.1.</span> <span class="nav-text">5.1.1 绘制三角形</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-2-%E7%BB%98%E5%88%B6%E5%9C%86"><span class="nav-number">5.1.2.</span> <span class="nav-text">5.1.2 绘制圆</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-%E8%BE%93%E5%85%A5"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 输入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-1-%E4%BE%A6%E6%B5%8B%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5"><span class="nav-number">5.2.1.</span> <span class="nav-text">5.2.1 侦测键盘输入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-2-%E8%AF%BB%E5%8F%96%E5%8D%95%E4%B8%80%E5%AD%97%E7%AC%A6"><span class="nav-number">5.2.2.</span> <span class="nav-text">5.2.2 读取单一字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-3-%E8%AF%BB%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">5.2.3.</span> <span class="nav-text">5.2.3 读取字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Q-A"><span class="nav-number">6.</span> <span class="nav-text">6 Q&amp;A</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Reference"><span class="nav-number">7.</span> <span class="nav-text">7 Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Belyenochi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Belyenochi" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:491537461q@gmail.com" title="E-Mail → mailto:491537461q@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/JasonTomas13" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;JasonTomas13" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/luo-yu-31-80/activities" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;luo-yu-31-80&#x2F;activities" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://belyenochi.github.io/2018/09/01/jsys_12_summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算的要素第十二章总结 | The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算的要素第十二章总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-01 23:05:16" itemprop="dateCreated datePublished" datetime="2018-09-01T23:05:16+08:00">2018-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">计算机体系结构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本章是针对Hack OS各个模块的概述及其实现，其中某几个模块实现的算法很有意思，让我们马上开始吧&#126;</p>
+<h3 id="1-什么是OS（以Hack-OS为例）"><a href="#1-什么是OS（以Hack-OS为例）" class="headerlink" title="1 什么是OS（以Hack OS为例）"></a>1 什么是OS（以Hack OS为例）</h3><ol>
+<li>以一种对软件友好的方式封装了不同的硬件服务</li>
+<li>用不同的函数和抽象数据类型扩展了高级语言。在这个意义上的操作系统与语言的标准程序库的分界线就不那么明显。事实上，某些现代语言（例如Java）就趋向于将很多经典的操作系统服务（比如GUI管理，内存管理，和多任务处理等）连同很多语言拓展一起打包到其标准程序库中，这么做的目的以我的理解是为了屏蔽系统层面的差异（比如C的fopen等）以及减少系统调用（比如Java的内存管理，向内存申请一大片空间，Java NIO等）</li>
+</ol>
+<h3 id="2-为什么我们需要OS"><a href="#2-为什么我们需要OS" class="headerlink" title="2 为什么我们需要OS"></a>2 为什么我们需要OS</h3><p>计算机是用来解决实际问题的，所以我们构建计算机硬件用来计算，基于硬件我们造了编译器用来写更可读的汇编程序，然后有了用汇编程序写的应用，随着应用程序越来越到，我们需要抽象出能够将控制（硬件和外围设备以及软件）和分配资源的常用功能集一体的概念，它就是Operating System，感兴趣的同学可以看看操作系统的演化。（有时间去研究研究发出来）<br>计算机系统的基本目标是执行用户程序并以更容易的方式解决用户的问题。</p>
+<h3 id="3-数学操作"><a href="#3-数学操作" class="headerlink" title="3 数学操作"></a>3 数学操作</h3><p>首先，这里明确的告诉了我下意识想到的通过累加和累减来实现乘除法来操作系统层面是不可行的，原因很简单，效率太低了高达O（n）的输入敏感复杂度会让计算一个100000000000000*10000000000000的人在凳子上坐上几天（只是举个例子，数据不具备代表性），那么就让我们来看一看Hack OS的做法</p>
+<p>注：以下所有运算都假定操作数为16位（Hacl硬件规范字长16位）</p>
+<h4 id="3-1-乘法"><a href="#3-1-乘法" class="headerlink" title="3.1 乘法"></a>3.1 乘法</h4><p><img src="/images/jsys_12/%E4%B9%98%E6%B3%95.jpg"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">multiply</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> sum = <span class="number">0</span>,index = <span class="number">15</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(index &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (y.<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">16</span>,<span class="string">&quot;0&quot;</span>).<span class="title function_">charAt</span>(index) !== <span class="string">&quot;0&quot;</span>) &#123;</span><br><span class="line">        	<span class="variable language_">console</span>.<span class="title function_">log</span>(y, index,y.<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">16</span>,<span class="string">&quot;0&quot;</span>));</span><br><span class="line">             sum = sum + x;</span><br><span class="line">        &#125;</span><br><span class="line">        x = x + x;</span><br><span class="line">       index = index - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到实际上乘法就是在模拟我们日常生活中的乘法，通过逐位相乘，并且再每一次乘完以后将被乘数左移一位，迭代这个过程直到遍历完所有位数，在日常生活中我们看到某个算术53*20，当我们处理完5这一位不会再用0去乘20，但是在计算机中你需要一套规则去运算，这套规则在这里就是遍历完操作数的所有位，即便它全是0。</p>
+<h4 id="3-2-除法"><a href="#3-2-除法" class="headerlink" title="3.2 除法"></a>3.2 除法</h4><p><img src="/images/jsys_12/%E9%99%A4%E6%B3%95.jpg"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">divide</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> q,result,flag;</span><br><span class="line"></span><br><span class="line">    flag = !((x &lt; <span class="number">0</span>) ^ (y &lt; <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    x = <span class="title class_">Math</span>.<span class="title function_">abs</span>(x);</span><br><span class="line">    y = <span class="title class_">Math</span>.<span class="title function_">abs</span>(y);</span><br><span class="line">    <span class="keyword">if</span>(y &gt; x) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    q = <span class="title function_">divide</span>(x,y + y);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x - (<span class="number">2</span> * q * y) &lt; y) &#123;</span><br><span class="line">        result = q + q;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        result = q + q + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> flag ? result : -result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>思路也是模仿人除法的过程，选择一个尽可能从x上减去y的最大倍数（假定算式x&#x2F;y），直到y比x大，这个过程的递归形式如上。</p>
+<h4 id="3-3-平方根"><a href="#3-3-平方根" class="headerlink" title="3.3 平方根"></a>3.3 平方根</h4><p><img src="/images/jsys_12/%E4%BA%8C%E5%8F%89%E6%A0%91.jpg"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">sqrt</span>(<span class="params">x</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> y,j,temp,tempQ;</span><br><span class="line"></span><br><span class="line">    y = <span class="number">0</span>;</span><br><span class="line">    j = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(j &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">      temp = y + <span class="title class_">Math</span>.<span class="title function_">pow</span>(<span class="number">2</span>,j);</span><br><span class="line">      tempQ = temp * temp;</span><br><span class="line">      <span class="comment">//avoid overflow</span></span><br><span class="line">      <span class="keyword">if</span>((tempQ &lt;= x) &amp; (tempQ &gt; <span class="number">0</span>))&#123;</span><br><span class="line">        y = temp;</span><br><span class="line">      &#125;</span><br><span class="line">      j = j - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个算法就是根据y²&lt;&#x3D; x &lt;(y+1)²，使得y从0开始逐步逼近x使得y满足上述区间</p>
+<h3 id="4-内存管理"><a href="#4-内存管理" class="headerlink" title="4 内存管理"></a>4 内存管理</h3><p>内存管理很有趣，首先说一说内存管理的背景</p>
+<h4 id="4-1-背景"><a href="#4-1-背景" class="headerlink" title="4.1 背景"></a>4.1 背景</h4><p>计算机的程序会声明并使用各种类型的变量，包括整数、布尔数等简单的数据类型以及如数组、对象等复杂的数据类型。高级语言的最大优点之一是程序员不必关心内存管理细节：比如为变量分配内存空间；以及当该变量不再使用时，回收为其分配的内存空间。所有关于内存管理的琐碎工作都由编译器、操作系统和虚拟机在后端完成。<br>不同的变量的内存在程序生命周期中的不同时刻被分配。例如，<strong>静态变量</strong>在编译期间由编译器为其分配内存，而<strong>局部变量</strong>则在每个子程序开始运行时被分配在堆栈内。其他变量的内存则是在程序的执行过程中被动态分配，这时候OS就要上了。注意操作系统本身并不自带垃圾回收功能，这是高级语言提供的内存管理手段，比如Java，JVM先向OS请求一大块内存用于程序运行，然后在这块内存中可以“自动内存管理”，本质是在OS层面之上进行内存管理，这样就不用频繁的调用系统的malloc，free了</p>
+<p>在OS看来内存其实就是一块大数组（big buffer），当然真实的内存实现我们已经在之前看到过了(多个Register-&gt;多个RAM-&gt;Memory)。</p>
+<h4 id="4-2-内存管理算法"><a href="#4-2-内存管理算法" class="headerlink" title="4.2 内存管理算法"></a>4.2 内存管理算法</h4><h5 id="4-2-1-alloc"><a href="#4-2-1-alloc" class="headerlink" title="4.2.1 alloc"></a>4.2.1 alloc</h5><p><img src="/images/jsys_12/malloc.jpg"><br>上图的freeList的节点乍看可能有点疑惑，其实这里的freeList是经历过deAlloc的，一开是freeList只有一个节点就是整块内存区，然后随着alloc-deAlloc，链表节点逐渐增多，碎片化也越来越严重…</p>
+<h5 id="4-2-2-deAlloc"><a href="#4-2-2-deAlloc" class="headerlink" title="4.2.2 deAlloc"></a>4.2.2 deAlloc</h5><p><img src="/images/jsys_12/delloc.jpg"><br>deAlloc的算法其实可以总结如下：<br>假设待释放节点值为o</p>
+<ol>
+<li>找到freeList中节点的地址值比待释放节点值大的节点（A）</li>
+<li>将待释放的节点的next域设为A的地址 3.将A的上一个节点的next域设为o</li>
+</ol>
+<p>然而我刚开始的做法是：</p>
+<ol>
+<li>将o的next域设为freeList指向的节点</li>
+<li>修改freeList指向o的地址（这和上图Mark的做法有点出路，个人觉得这样头插效率比根据Address来的高且简单） 当然我所谓的优于，是建立在没有合并的基础上的…</li>
+</ol>
+<h5 id="4-2-3-defragmentation（碎片合并）"><a href="#4-2-3-defragmentation（碎片合并）" class="headerlink" title="4.2.3 defragmentation（碎片合并）"></a>4.2.3 defragmentation（碎片合并）</h5><p>细心的读者已经发现了，上图中还包含这碎片合并的动作，这个碎片合并的动作如果链表不是根据address有序的话复杂度是O（n²）级别的，这带来的直接后果就是，咦，为什么我的程序关的这么慢。。。所以我们在deAlloc的时候要用第一个算法的原因就是如此。</p>
+<p>defragmentation算法如下：<br>1.遍历链表<br>2.如果当前节点的地址值+size+1（存储size的存储单元） &#x3D; 下一个节点的地址，merge</p>
+<h3 id="5-输入输出管理"><a href="#5-输入输出管理" class="headerlink" title="5 输入输出管理"></a>5 输入输出管理</h3><p>这部分我就说两个比较有意思的地方</p>
+<h4 id="5-1-输出"><a href="#5-1-输出" class="headerlink" title="5.1 输出"></a>5.1 输出</h4><h5 id="5-1-1-绘制三角形"><a href="#5-1-1-绘制三角形" class="headerlink" title="5.1.1 绘制三角形"></a>5.1.1 绘制三角形</h5><p><img src="/images/jsys_12/sanjiao.jpg"><br>这里说绘制三角形，不如说如何模拟三角形，实际上我们画出的三角形是以堆砌一个个像素形成的，可以把像素看出3*1的正方形，而绘制三角形的过程，就是如何堆砌正方形让它更像三角形，下面是过程图示<br><img src="/images/jsys_12/sanjiaoxing.png"></p>
+<p><strong>图中最关键的一点在于 当前的坐标斜率&lt;&#x3D;(y2-y1)&#x2F;(x2-x1),a++，否则b++</strong></p>
+<h5 id="5-1-2-绘制圆"><a href="#5-1-2-绘制圆" class="headerlink" title="5.1.2 绘制圆"></a>5.1.2 绘制圆</h5><p><img src="/images/jsys_12/circle.jpg"><br>绘制圆的本质就是绘制一系列的矩形，算法如上</p>
+<h4 id="5-2-输入"><a href="#5-2-输入" class="headerlink" title="5.2 输入"></a>5.2 输入</h4><p>这一部分主要描述操作系统如何在三个递增的抽象层级上来管理面向文本的输入：</p>
+<ol>
+<li>捕获单字符输入</li>
+<li>捕获多字符输入</li>
+<li>捕获多字符输入（也就是字符串）</li>
+</ol>
+<h5 id="5-2-1-侦测键盘输入"><a href="#5-2-1-侦测键盘输入" class="headerlink" title="5.2.1 侦测键盘输入"></a>5.2.1 侦测键盘输入</h5><p><img src="/images/jsys_12/keyboard.jpg"><br>在底层捕获键盘输入时，程序直接从硬件获取数据，并确定用户当前按下哪个键。对该原始数据的访问依赖于键盘接口的具体特性。比如，若接口是被键盘持续更新的内存映像（比如Hack），就可以通过检测对应的内存映像来确定按下了哪个键</p>
+<h5 id="5-2-2-读取单一字符"><a href="#5-2-2-读取单一字符" class="headerlink" title="5.2.2 读取单一字符"></a>5.2.2 读取单一字符</h5><p><img src="/images/jsys_12/readchar.jpg"></p>
+<h5 id="5-2-3-读取字符串"><a href="#5-2-3-读取字符串" class="headerlink" title="5.2.3 读取字符串"></a>5.2.3 读取字符串</h5><p><img src="/images/jsys_12/readLine.jpg"></p>
+<p><strong>其他模块String，Array，Output，Sys是在以上模块上的封装，具体的实现细节就参考书吧。</strong></p>
+<h3 id="6-Q-A"><a href="#6-Q-A" class="headerlink" title="6 Q&amp;A"></a>6 Q&amp;A</h3><p>Q：关于平方根算法有更高效的算法吗？<br>A：除了书中提到的牛顿法求平方根（不动点算法），泰勒展开，<a target="_blank" rel="noopener" href="http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/A-more-efficient-square-root-algorithm-td4028140.htmla">这里</a>实现了一个长除法的实现，除了平方根算法，书中对于圆的绘制也有<a target="_blank" rel="noopener" href="http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Fast-circle-algorithm-td4030808.html">更高效的算法</a></p>
+<h3 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7 Reference"></a>7 Reference</h3><p><a target="_blank" rel="noopener" href="http://sites.google.com/site/johnkennedyshome/home/downloadable-papers/bcircle.pdf">用于绘制圆的快速Bresenham型算法，John Kennedy</a><br><a target="_blank" rel="noopener" href="https://sites.google.com/site/johnkennedyshome/home/downloadable-papers/bcircle.pdf?attredirects=0">用于绘制椭圆的快速Bresenham型算法，John Kennedy</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Nand2tetris/" rel="tag"># Nand2tetris</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/31/iterator-00/" rel="prev" title="迭代器实现（零）">
+                  <i class="fa fa-angle-left"></i> 迭代器实现（零）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/03/parser_01/" rel="next" title="从零开始的编译原理之旅----Parser篇(一)">
+                  从零开始的编译原理之旅----Parser篇(一) <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jason</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

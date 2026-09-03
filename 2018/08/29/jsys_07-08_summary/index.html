@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"belyenochi.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Programmers are creators of universes for which they alone are responsiable. Universes of virtually unlimited complexity can be created in the form of">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算的要素第七-八章小结">
+<meta property="og:url" content="https://belyenochi.github.io/2018/08/29/jsys_07-08_summary/index.html">
+<meta property="og:site_name" content="The Tao of Jason">
+<meta property="og:description" content="Programmers are creators of universes for which they alone are responsiable. Universes of virtually unlimited complexity can be created in the form of">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_07-08/VM.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_07-08/add.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_07-08/register.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_07-08/arithic.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_07-08/PushPop.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_07-08/goto.jpg">
+<meta property="og:image" content="https://belyenochi.github.io/images/jsys_07-08/funCall.jpg">
+<meta property="article:published_time" content="2018-08-29T11:19:23.000Z">
+<meta property="article:modified_time" content="2026-09-03T07:38:43.012Z">
+<meta property="article:author" content="Jason">
+<meta property="article:tag" content="Nand2tetris">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://belyenochi.github.io/images/jsys_07-08/VM.jpg">
+
+
+<link rel="canonical" href="https://belyenochi.github.io/2018/08/29/jsys_07-08_summary/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://belyenochi.github.io/2018/08/29/jsys_07-08_summary/","path":"2018/08/29/jsys_07-08_summary/","title":"计算的要素第七-八章小结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算的要素第七-八章小结 | The Tao of Jason</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">The Tao of Jason</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">1 虚拟机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 虚拟机是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 为什么需要虚拟机？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-Stack-based-Virtual-Machine"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 Stack based Virtual Machine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-Register-based-Virtual-Machine"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 Register based Virtual Machine</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A0%86%E6%A0%88%E8%BF%90%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">2 堆栈运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E7%AE%97%E6%9C%AF%E5%92%8C%E9%80%BB%E8%BE%91%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 算术和逻辑命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%E5%91%BD%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 内存访问命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">3 程序控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6%E6%B5%81%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 程序控制流命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 函数调用命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Q-A"><span class="nav-number">4.</span> <span class="nav-text">4 Q&amp;A</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Reference"><span class="nav-number">5.</span> <span class="nav-text">5 Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Belyenochi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Belyenochi" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:491537461q@gmail.com" title="E-Mail → mailto:491537461q@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/JasonTomas13" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;JasonTomas13" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/luo-yu-31-80/activities" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;luo-yu-31-80&#x2F;activities" rel="noopener me" target="_blank"><i class="fab fa-zhihu fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://belyenochi.github.io/2018/08/29/jsys_07-08_summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算的要素第七-八章小结 | The Tao of Jason">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算的要素第七-八章小结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-29 19:19:23" itemprop="dateCreated datePublished" datetime="2018-08-29T19:19:23+08:00">2018-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">计算机体系结构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><em>Programmers are creators of universes for which they alone are responsiable. Universes of virtually unlimited complexity can be created in the form of computer programms. —-Joseph Weizenbaum, Computer Power and Human Reason, 1974</em></p>
+<p>因为书中第七章和第八章都在讲虚拟机的后端部分，故这里将其合并总结。</p>
+<h3 id="1-虚拟机"><a href="#1-虚拟机" class="headerlink" title="1 虚拟机"></a>1 虚拟机</h3><h4 id="1-1-虚拟机是什么"><a href="#1-1-虚拟机是什么" class="headerlink" title="1.1 虚拟机是什么"></a>1.1 虚拟机是什么</h4><p><img src="/images/jsys_07-08/VM.jpg"><br>虚拟机（VM）是在本机操作系统之上的高级抽象，它模拟物理机器。在本书中，我们讨论的是中间编译目标，既不是进程虚拟机(process virtual machine)，比如JVM，CLR等运行时平台，也不是系统虚拟机(system virtual machine)，系统虚拟机提供了系统级的硬件抽象，比如VirtualBox。虚拟机使同一平台能够在多个操作系统和硬件体系结构上运行。可以将Java和Python的解释器作为示例，其中代码被编译为JVM特定的字节码。在Microsoft .Net体系结构中也可以看到相同的情况，其中代码被编译为CLR（公共语言运行时）的中间语言。这里有一篇讲解<a target="_blank" rel="noopener" href="http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/What-does-quot-virtual-machine-quot-and-quot-real-platform-quot-mean-td4028959.html#a4028960">Hack VM</a>的例子供大家参考。<br>虚拟机通常应该实现什么？它应该模拟物理CPU执行的操作，因此理想情况下应包含以下概念：</p>
+<ol>
+<li>将源语言编译为VM特定的字节码</li>
+<li>包含指令和操作数的数据结构（指令处理的数据）</li>
+<li>用于函数调用操作的调用堆栈</li>
+<li>指向下一条要执行的指令的“指令指针”（IP）</li>
+<li>一个虚拟的’CPU’ - 指令调度程序</li>
+<li>获取下一条指令（由指令指针寻址）</li>
+<li>解码操作数</li>
+<li>执行指令</li>
+</ol>
+<h4 id="1-2-为什么需要虚拟机？"><a href="#1-2-为什么需要虚拟机？" class="headerlink" title="1.2 为什么需要虚拟机？"></a>1.2 为什么需要虚拟机？</h4><p>高级语言程序在运行在目标机器上之前，必须得翻译成对应的机器语言。这个编译过程是相当复杂的…通常，必须给任意给定的高级语言写对应到指定机器的编译器，但这种高级语言到机器语言的直接映射直接导致了强依赖，从软件工程的角度看减少依赖，没有什么是加一层抽象不能解决的，如果有，那就加两层。<br>结果就是，为了减少依赖，将整个编译过程划分为几乎独立的两个阶段。</p>
+<ul>
+<li>第一阶段，高级语言翻译到中间语言（IR）</li>
+<li>第二阶段，中间语言翻译到对应的硬件机器语言</li>
+</ul>
+<p>你看这样语言的编译器实现人员在大部分情况下就不用再写各种各样的编译到机器语言的编译器，瞧瞧Clojure，站在JVM的肩膀上：），事实上这种行为也是软件工程的良好体现，良好的模块化设计（高层模块和底层模块，模块件通过VMcode这种语言通信）和抽象屏障（VMCode就是高层和底层之间的万里长城）意味着编写高级语言的编译器的程序员（高层模块）和将VMcode编译到硬件的程序员（底层模块）可以分头行动，抽象屏障万岁！！！</p>
+<h4 id="1-3-Stack-based-Virtual-Machine"><a href="#1-3-Stack-based-Virtual-Machine" class="headerlink" title="1.3 Stack based Virtual Machine"></a>1.3 Stack based Virtual Machine</h4><p>VM的实现主流有两种，一种是堆栈模型，一种是寄存器模型（下一节讲），选择模型要考虑的关键因素是：在VM操作中的操作数和操作结果应该放在哪里。而在堆栈模型中，是将其放在堆栈（stack）这个数据结构中。<br>基于栈的虚拟机有以下几个特点</p>
+<ul>
+<li>指令长度是固定的</li>
+<li>执行多个操作数计算时，会先将操作数做压入栈，由运算指令取出并计算</li>
+</ul>
+<p>下面以Add指令来说明stack machine的一般操作：<br><img src="/images/jsys_07-08/add.jpg"></p>
+<ol>
+<li>PUSH 4 &#x2F;&#x2F; 当前栈指针指向的地址赋值4，SP&#x3D;SP+1</li>
+<li>PUSH 5 &#x2F;&#x2F; 当前栈指针指向的地址赋值5，SP&#x3D;SP+1</li>
+<li>ADD &#x2F;&#x2F; 取出栈最上方的两个值相加，压入SP-2，SP&#x3D;SP-1</li>
+</ol>
+<p>可以看出基于堆栈的模型的优点在于操作数由堆栈指针(SP)隐式地寻址。这意味着虚拟机不需要显式地知道操作数地址，因为调用堆栈指针将给（Pop）下一个操作数。在基于堆栈的VM中，所有算术和逻辑运算都是通过push和pop操作数并在堆栈中生成来执行的。</p>
+<h4 id="1-4-Register-based-Virtual-Machine"><a href="#1-4-Register-based-Virtual-Machine" class="headerlink" title="1.4 Register based Virtual Machine"></a>1.4 Register based Virtual Machine</h4><p>在基于寄存器的虚拟机实现中，存储操作数的数据结构基于CPU的寄存器。这里没有PUSH或POP操作，但是指令需要包含操作数的地址（寄存器）。也就是说，指令的操作数在指令中明确地被寻址，不像基于堆栈的模型，其中我们有一个指向操作数的堆栈指针。例如，如果要在基于寄存器的虚拟机中执行ADD操作，则指令或多或少如下：<br><img src="/images/jsys_07-08/register.jpg"></p>
+<p>正如前面提到的，没有POP或PUSH操作，因此添加指令只是一行。但是与堆栈不同，我们需要明确地将操作数的地址称为R1，R2和R3。这里的优点是<strong>不存在入栈出栈开销</strong>，并且基于寄存器的VM中的指令在指令调度循环内执行得更快。</p>
+<p>基于寄存器的模型的另一个优点是它允许在基于堆栈的方法中无法完成的某些优化。一个这样的例子是当代码中有<strong>共同的子表达式</strong>时，寄存器模型可以计算一次并将结果存储在寄存器中以供将来使用时子表达式再次出现，这降低了重新计算表达式的成本。</p>
+<p>基于寄存器的模型的<strong>问题</strong>是平均寄存器指令大于平均堆栈指令（指令长度也不是固定的），因为我们需要明确指定操作数地址。由于堆栈指针对堆栈机器的指令很短，相应的寄存器机器指令需要包含操作数位置，并且与堆栈代码相比产生更多的寄存器代码，并且如果利用寄存器做数据交换，就要经常保存和恢复寄存器的结果，这就导致基于寄存器的虚拟机在实现上要比基于栈的复杂，代码编译也要复杂得多</p>
+<p>我遇到的一篇很棒的博客文章（在此链接中）包含基于寄存器的虚拟机的解释性和简单的C实现。如果实现虚拟机和解释器是您的主要兴趣，那么ANTLR创建者Terrence Parr的书名为“语言实现模式：创建您自己的特定领域和通用编程语言”，可能会非常方便。</p>
+<h3 id="2-堆栈运算"><a href="#2-堆栈运算" class="headerlink" title="2 堆栈运算"></a>2 堆栈运算</h3><h4 id="2-1-算术和逻辑命令"><a href="#2-1-算术和逻辑命令" class="headerlink" title="2.1 算术和逻辑命令"></a>2.1 算术和逻辑命令</h4><p><img src="/images/jsys_07-08/arithic.jpg"><br>VM支持一元和二元操作命令。根据命令的操作数个数，从堆栈中弹出对应个元素，然后执行相应的运算，再将结果压入堆栈。这么做的好处很明显，每次操作不用管堆栈的其余部分（除了操作数）</p>
+<h4 id="2-2-内存访问命令"><a href="#2-2-内存访问命令" class="headerlink" title="2.2 内存访问命令"></a>2.2 内存访问命令</h4><p><img src="/images/jsys_07-08/PushPop.jpg"><br>所有的内存段都通过两个命令来存取，PUSH，POP，这使得对内存的操作只需关注栈顶的变化。</p>
+<h3 id="3-程序控制"><a href="#3-程序控制" class="headerlink" title="3 程序控制"></a>3 程序控制</h3><h4 id="3-1-程序控制流命令"><a href="#3-1-程序控制流命令" class="headerlink" title="3.1 程序控制流命令"></a>3.1 程序控制流命令</h4><p><img src="/images/jsys_07-08/goto.jpg"><br>计算机程序默认的执行顺序是线性的，即一个命令接着一个命令执行 ，这个连续的控制流偶尔被分支命令打断（比如在循环中执行迭代）。在底层编程中，分支逻辑采用goto destination 命令实现，该命令让计算机跳转到目标参数指定的位置（Hack是goto到ROM的指定位置），而不是接着原指令的下一条指令线性执行。目的地址的指定方式可以有多种形式，最原始的一种就是指定即将执行的指令的物理地址。应用标签label来描述jump的目的地址可以建立稍微抽象一点的重定向命令（redirection command）。这种改进需要程序语言配有标签指令（labeling directive），它可将标签绑定到程序中的指定位置。</p>
+<h4 id="3-2-函数调用命令"><a href="#3-2-函数调用命令" class="headerlink" title="3.2 函数调用命令"></a>3.2 函数调用命令</h4><p><img src="/images/jsys_07-08/funCall.jpg"><br>高级语言所具有的这种能将表达式自由组合的能力使得我们可以编写抽象代码，让我们把主要精力放在算法的思想上面，而不是机器的执行上。当然高级语言抽象级别越高，在底层要做的工作就越多。特别是，必须在底层控制子程序（callee）和子程序调用者（caller）之间的相互影响。对于在运行期的每个子程序调用，底层必须处理下面的一些细节</p>
+<ul>
+<li>将参数从调用者(caller)传递给被调用者(callee)</li>
+<li>在跳转并执行被调用者之前，先保存调用者的状态</li>
+<li>为被调用者使用的局部变量分配空间</li>
+<li>跳转并执行被调用者</li>
+<li>将被调用者的运行结果返回给调用者</li>
+<li>在从被调用者返回之前，回收其使用的内存空间</li>
+<li>恢复调用者的状态</li>
+<li>返回到调用语句之后的下一条语句继续执行</li>
+</ul>
+<p>有关上述命令的实现，书中都有详细介绍，这里就不再展开叙述。</p>
+<h3 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4 Q&amp;A"></a>4 Q&amp;A</h3><p>Q：有什么办法可以优化生成的asm代码吗？<br>A：<a target="_blank" rel="noopener" href="http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Generated-code-size-td1201814.html">hack vmtranslator优化</a></p>
+<p>Q：How is the VM really made?<br>A：VM Translator在您的计算机上运行，并将.vm文件转换为.asm文件。我用Python编写了我的VM Translator。编写本机VM是一项艰巨的任务，需要比Hack更复杂的计算机才能运行。Java VM是用C &#x2F; C ++编写的。特定于平台的编译器允许它在各种不同的目标硬件上运行。已经用C &#x2F; C ++编写了与目标操作系统连接的库。当您为32位Windows系统下载Java时，您将获得一个二进制文件，该二进制文件的目标是与适当的Windows支持库链接的32位Intel 处理器。在现实世界中，我们尽可能少地编写汇编代码。对于我（Mark）所做的嵌入式系统编程，工具（编译器等）在Windows上运行，只有二进制文件加载到实际的硬件上。所有代码都是用C语言编写的，带有一些小的汇编语言例程。512K ROM和64K RAM是一个很大的配置。现代C &#x2F; C ++编译器是使用它们自己的早期版本编写的。第一个C编译器可能用B语言编写，B语言是C语言的前身。</p>
+<p>Q：既然Hack VM只是个目标代码，那么如何用Jack来实现VM 模拟器呢（现在Jack的栈式虚拟机能跑都是多亏了Java编写的模拟器，实际上这个模拟器起了一个VM的作用，问题是现在要用Jack自我实现这个模拟器，通过JackOS的硬件）<br>A：事实上这里Mark已经有了尝试<a target="_blank" rel="noopener" href="http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Hack-II-Escaping-the-Harvard-straitjacket-td2877780.html"> Hack II: Escaping the Harvard straitjacket</a></p>
+<h3 id="5-Reference"><a href="#5-Reference" class="headerlink" title="5 Reference"></a>5 Reference</h3><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Virtual_machine">Virtual Machine</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/861422/is-the-java-virtual-machine-really-a-virtual-machine-in-the-same-sense-as-my-vmw">Is the Java Virtual Machine really a virtual machine in the same sense as my VMWare or Parallels file?</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/mycwq/article/details/45653897">erlang虚拟机代码执行原理</a><br><a target="_blank" rel="noopener" href="https://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/">Stack based vs Register based Virtual Machine Architecture, and the Dalvik VM</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Nand2tetris/" rel="tag"># Nand2tetris</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/28/parser_00/" rel="prev" title="从零开始的编译原理之旅----Parser篇(零)">
+                  <i class="fa fa-angle-left"></i> 从零开始的编译原理之旅----Parser篇(零)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/31/iterator-00/" rel="next" title="迭代器实现（零）">
+                  迭代器实现（零） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jason</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
