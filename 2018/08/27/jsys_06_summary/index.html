@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://belyenochi.github.io/images/jsys_06/memory.jpg">
 <meta property="og:image" content="https://belyenochi.github.io/images/jsys_06/preDefine.jpg">
 <meta property="article:published_time" content="2018-08-26T16:04:27.000Z">
-<meta property="article:modified_time" content="2026-09-03T07:38:43.012Z">
+<meta property="article:modified_time" content="2026-09-03T09:08:19.000Z">
 <meta property="article:author" content="Jason">
 <meta property="article:tag" content="Nand2tetris">
 <link rel="canonical" href="https://belyenochi.github.io/2018/08/27/jsys_06_summary/">
@@ -293,7 +293,7 @@
 <h3 id="2-指令"><a href="#2-指令" class="headerlink" title="2 指令"></a>2 指令</h3><p>Hack的指令集比较IA-32的指令可以说是很简单了，hack的指令分为寻址指令（A-指令，Addressing Instruction）和计算指令（C-指令，Comput Instruction）<br><img src="/images/jsys_06/instruction.jpg"><br>A指令的作用是将value读入A寄存器，比如你要访问内存地址为12的值，步骤如下</p>
 <ol>
 <li>@12 &#x2F;&#x2F; 将12这个地址值读入A寄存器</li>
-<li>M &#x2F;&#x2F; M的默认行为是将A寄存器中的值作为地址访问该地址存储的值 <img src="/images/jsys_06/memory.jpg"></li>
+<li>M &#x2F;&#x2F; M的默认行为是将A寄存器中的值作为地址访问该地址存储的值<br><img src="/images/jsys_06/memory.jpg"></li>
 </ol>
 <h3 id="3-符号定义"><a href="#3-符号定义" class="headerlink" title="3 符号定义"></a>3 符号定义</h3><p>符号分为3种，分别是：</p>
 <h4 id="3-1-预定义符号"><a href="#3-1-预定义符号" class="headerlink" title="3.1 预定义符号"></a>3.1 预定义符号</h4><p>预定义符号指代的是对应的符号在数据内存中的位置（RAM）<br><img src="/images/jsys_06/preDefine.jpg"></p>

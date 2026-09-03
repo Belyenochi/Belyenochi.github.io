@@ -28,7 +28,7 @@
 <meta property="og:description" content="1 目录 本系列旨在学习各种parser思路及技巧，分为以下几个部分   1.  清晨入古寺—-论世间parser为何物  2.  初日照高林—-初探First集，Follow集   3.  曲径通幽处—-预测分析表的构建 [本篇]  4.  禅房花木深—-实现LL(1) parser   5.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-09-04T12:53:18.000Z">
-<meta property="article:modified_time" content="2026-09-03T07:53:05.301Z">
+<meta property="article:modified_time" content="2026-09-03T10:33:51.494Z">
 <meta property="article:author" content="Jason">
 <meta property="article:tag" content="parser">
 <link rel="canonical" href="https://belyenochi.github.io/2018/09/04/parser_02/">
@@ -327,7 +327,7 @@ F -&gt; a
 <li>读入”(“</li>
 <li>查询预测分析表</li>
 <li>根据预测分析表结果，进入相应的产生式（也可称展开产生式）</li>
-<li>这里有两种等价的方式实现匹配 4.1 使用程序的调用栈递归进行预测分析，当程序正常结束且输入完全匹配时，语法分析成功 4.2 使用栈数据结构来非递归的预测分析，当栈为空且完全匹配时，语法分析成功</li>
+<li>这里有两种等价的方式实现匹配<br>4.1 使用程序的调用栈递归进行预测分析，当程序正常结束且输入完全匹配时，语法分析成功<br>4.2 使用栈数据结构来非递归的预测分析，当栈为空且完全匹配时，语法分析成功</li>
 </ol>
 <p>Tip:这里有同学可能会问，为啥总是能用非递归来模拟递归？<br>其实在Forthan的年代，人们还木有意识到递归对于程序的用处，第一个倡导编程语言应该实现递归的就是大名鼎鼎的Dijkstra ，随着<a target="_blank" rel="noopener" href="https://dijkstrascry.com/node/4">Dijkstra的论文</a>发表，在 那之后的语言比如ALGOL 60便使用了call stack这个概念来实现递归，不过据说在forthan的年代（也就是50年代早期）IBM的机器还没有堆栈实现，并且机器很小，估计用了递归效率也够呛，不过递归的威力早在Church提出lambda calculus以及 Church encoding就已经显现出来了。</p>
 <h3 id="3-为什么需要预测分析表"><a href="#3-为什么需要预测分析表" class="headerlink" title="3 为什么需要预测分析表"></a>3 为什么需要预测分析表</h3><p>其实你也可以不用实现预测分析表，预测分析表的本质就是对当前字符进行分支判断吗，只不过这分支比较多，然后你懂的代码写出来都是if-else，嵌套if-else，这一点都不优雅：（，所以我们需要预测分析表来驱动预测语义分析（这部分龙书语法分析部分讲的挺细）</p>

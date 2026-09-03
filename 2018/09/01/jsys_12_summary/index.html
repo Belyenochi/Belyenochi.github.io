@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/readchar.jpg">
 <meta property="og:image" content="https://belyenochi.github.io/images/jsys_12/readLine.jpg">
 <meta property="article:published_time" content="2018-09-01T15:05:16.000Z">
-<meta property="article:modified_time" content="2026-09-03T07:38:43.012Z">
+<meta property="article:modified_time" content="2026-09-03T09:08:19.000Z">
 <meta property="article:author" content="Jason">
 <meta property="article:tag" content="Nand2tetris">
 <link rel="canonical" href="https://belyenochi.github.io/2018/09/01/jsys_12_summary/">
@@ -314,12 +314,12 @@
 <h5 id="4-2-2-deAlloc"><a href="#4-2-2-deAlloc" class="headerlink" title="4.2.2 deAlloc"></a>4.2.2 deAlloc</h5><p><img src="/images/jsys_12/delloc.jpg"><br>deAlloc的算法其实可以总结如下：<br>假设待释放节点值为o</p>
 <ol>
 <li>找到freeList中节点的地址值比待释放节点值大的节点（A）</li>
-<li>将待释放的节点的next域设为A的地址 3.将A的上一个节点的next域设为o</li>
+<li>将待释放的节点的next域设为A的地址<br>3.将A的上一个节点的next域设为o</li>
 </ol>
 <p>然而我刚开始的做法是：</p>
 <ol>
 <li>将o的next域设为freeList指向的节点</li>
-<li>修改freeList指向o的地址（这和上图Mark的做法有点出路，个人觉得这样头插效率比根据Address来的高且简单） 当然我所谓的优于，是建立在没有合并的基础上的…</li>
+<li>修改freeList指向o的地址（这和上图Mark的做法有点出路，个人觉得这样头插效率比根据Address来的高且简单）<br>当然我所谓的优于，是建立在没有合并的基础上的…</li>
 </ol>
 <h5 id="4-2-3-defragmentation（碎片合并）"><a href="#4-2-3-defragmentation（碎片合并）" class="headerlink" title="4.2.3 defragmentation（碎片合并）"></a>4.2.3 defragmentation（碎片合并）</h5><p>细心的读者已经发现了，上图中还包含这碎片合并的动作，这个碎片合并的动作如果链表不是根据address有序的话复杂度是O（n²）级别的，这带来的直接后果就是，咦，为什么我的程序关的这么慢。。。所以我们在deAlloc的时候要用第一个算法的原因就是如此。</p>
 <p>defragmentation算法如下：<br>1.遍历链表<br>2.如果当前节点的地址值+size+1（存储size的存储单元） &#x3D; 下一个节点的地址，merge</p>
